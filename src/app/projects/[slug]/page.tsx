@@ -111,7 +111,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </ul>
           </div>
 
-          Mobile: show action buttons under the content
+          {/* Mobile: show action buttons under the content */}
           <div className="mt-6 flex flex-wrap gap-3 md:hidden">
             {project!.githubUrl && (
               <Button asChild variant="outline" size="sm">
@@ -121,13 +121,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </Button>
             )}
 
-            {project!.liveUrl && (
-              <Button asChild variant="ghost" size="sm">
-                <a href={project!.liveUrl} target="_blank" rel="noreferrer">
-                  Live demo
-                </a>
-              </Button>
-            )}
+            
           </div>
         </div>
 
