@@ -73,9 +73,14 @@ html {
   -webkit-transform-style: preserve-3d;
 }
 .card-face {
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.card-face.front {
+  transform: rotateY(0deg);
+  z-index: 2;
 }
 .card-face.back {
   transform: rotateY(180deg);
+  z-index: 1;
 }
