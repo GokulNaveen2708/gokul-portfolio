@@ -7,8 +7,9 @@ export function ProjectPageActions() {
   const router = useRouter();
 
   const scrollToContact = () => {
-    const el = document.getElementById("contact");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    // Navigate back to the home page and include the contact hash
+    // so the browser will scroll to the contact section there.
+    router.push("/#contact");
   };
 
   return (
