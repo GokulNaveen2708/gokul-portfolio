@@ -44,7 +44,7 @@ export const projects: Project[] = [
     "Enabled real-time analytics by streaming food logs through event pipelines and aggregating daily + weekly nutritional summaries."
   ],
   githubUrl: "https://github.com/GokulNaveen2708/Diet_Logging",
-  image: "/projects/images/diet-logging-architecture.png"
+  image: "/projects/images/Diet-Logging.png"
 },
 
 {
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     "Achieved significantly more stable convergence under non-IID partitioning compared to baseline federated averaging."
   ],
   githubUrl: "https://github.com/GokulNaveen2708/Distributed-Trust-Aware-Federated-Learning",
-  image: "/projects/images/trust-fl-architecture.png"
+  image: "/projects/images/FL.jpg"
 },
 
 {
@@ -96,7 +96,7 @@ export const projects: Project[] = [
     "Generated insights on user engagement, competition difficulty, submission behavior, and dataset popularity."
   ],
   githubUrl: "https://github.com/GokulNaveen2708/Meta-Kaggle-Insights",
-  image: "/projects/images/meta-kaggle-dashboard.png"
+  image: "/projects/images/Kaggle.png"
 },
 
 {
@@ -123,7 +123,7 @@ export const projects: Project[] = [
     "Evaluated model performance across increasing unlabeled-data volumes to measure generalization gains from UDA."
   ],
   githubUrl: "https://github.com/GokulNaveen2708/Text-Classification-with-UDA-and-BERT",
-  image: "/projects/images/uda-bert-flow.png"
+  image: "/projects/images/TC.jpeg"
 }
 
 ];

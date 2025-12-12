@@ -25,7 +25,7 @@ export function SiteHeader() {
   const active = useActiveSection(["projects", "experience", "contact"]);
 
   return (
-    <header className="sticky top-0 z-20 border-b border-white/5 bg-bg/80 backdrop-blur">
+    <header className="sticky top-0 z-50 pointer-events-auto border-b border-white/5 bg-bg/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="text-sm font-semibold">
           Gokula Ranga Naveen Chapala
@@ -33,9 +33,9 @@ export function SiteHeader() {
 
         <nav className="hidden gap-6 text-sm text-fg-muted sm:flex items-center">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.href}
-              href={item.href}
+              href={`/#${item.id}`}
               className={
                 active === item.id
                   ? "text-accent font-medium"
@@ -43,7 +43,7 @@ export function SiteHeader() {
               }
             >
               {item.label}
-            </a>
+            </Link>
           ))}
           
           {/* Social Links */}

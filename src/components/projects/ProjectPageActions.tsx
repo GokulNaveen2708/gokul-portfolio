@@ -14,10 +14,25 @@ export function ProjectPageActions() {
 
   return (
     <div className="mt-10 flex flex-wrap gap-3">
-      <Button variant="outline" onClick={() => router.back()}>
+      <Button onClick={scrollToContact}>Get in touch about this</Button>
+    </div>
+  );
+}
+
+export function ProjectBackButton() {
+  const router = useRouter();
+
+  return (
+    <div className="mb-6">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="px-2 py-1"
+        onClick={() => router.back()}
+        aria-label="Go back"
+      >
         ← Back
       </Button>
-      <Button onClick={scrollToContact}>Get in touch about this</Button>
     </div>
   );
 }
