@@ -26,16 +26,16 @@ export function ExperienceCard({ experience }: ExperienceCardProps) {
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div
-        className="relative w-full h-full transition-transform duration-500 transform"
+        className={`relative w-full h-full transition-transform duration-500 transform card-inner ${
+          isFlipped ? "is-flipped" : ""
+        }`}
         style={{
-          transformStyle: "preserve-3d",
           transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
       >
         {/* Front of card */}
         <div
-          className="absolute w-full h-full bg-gradient-to-br from-white/5 via-white/10 to-transparent border border-white/10 rounded-2xl p-6 flex flex-col justify-between overflow-hidden group hover:border-white/20 hover:bg-white/10 transition"
-          style={{ backfaceVisibility: "hidden" }}
+          className="absolute w-full h-full bg-gradient-to-br from-white/5 via-white/10 to-transparent border border-white/10 rounded-2xl p-6 flex flex-col justify-between overflow-hidden group hover:border-white/20 hover:bg-white/10 transition card-face front"
         >
           <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/20 blur-[50px] transition duration-500 group-hover:bg-accent/30" />
 
@@ -81,11 +81,8 @@ export function ExperienceCard({ experience }: ExperienceCardProps) {
 
         {/* Back of card */}
         <div
-          className="absolute w-full h-full bg-gradient-to-br from-accent/10 via-accent/5 to-transparent border border-accent/30 rounded-2xl p-6 flex flex-col justify-between overflow-hidden"
-          style={{
-            backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-          }}
+          className="absolute w-full h-full bg-gradient-to-br from-accent/10 via-accent/5 to-transparent border border-accent/30 rounded-2xl p-6 flex flex-col justify-between overflow-hidden card-face back"
+          style={{ transform: "rotateY(180deg)" }}
         >
           <div className="relative z-10 space-y-3">
             {/* Impact headline */}
