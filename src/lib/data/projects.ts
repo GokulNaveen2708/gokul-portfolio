@@ -3,7 +3,7 @@ import type { Project } from "../types";
 export const projects: Project[] = [
   {
     slug: "textmark",
-    title: "TextMark — Lightweight Watermarking for Large Language Models",
+    title: "TextMark, A Simple Lightweight Watermarking for Large Language Models",
     subtitle: "LLM Governance • Trustworthy AI • NLP • FastAPI",
     category: "LLM Governance",
     tags: ["LLM", "Watermarking", "Trustworthy AI", "FastAPI", "Python", "NLP"],

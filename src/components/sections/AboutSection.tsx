@@ -31,7 +31,7 @@ export function AboutSection() {
             <div className="mt-4 text-sm text-fg-muted flex-1">
               <p>
                 I take ambiguous problems and design systems that stay reliable
-                at scale — event-driven backends, observability-first services,
+                at scale event-driven backends, observability-first services,
                 and production-ready ML pipelines. I prioritize clear contracts,
                 measurable SLOs, and simple, testable primitives.
               </p>
