@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/Button";
 import { Tag } from "@/components/ui/Tag";
 
 export function HeroSection() {
+  const heading =
+    "Software Engineer building scalable systems across ";
+  const accent =
+    "distributed computing, ML infrastructure, and cloud platforms..";
+
+  // We'll use a CSS keyframe animation per-letter to avoid motion hiccups
+  const stagger = 0.04; // seconds between letters
+  const duration = 6; // full cycle duration in seconds
   return (
     <Section id="hero">
       <motion.div
@@ -41,23 +49,39 @@ export function HeroSection() {
         {/* Right column: visual card */}
         <div className="flex-1 space-y-8">
           <div className="space-y-2">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Tag>Software Engineer · Distributed Systems · AI</Tag>
-            </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.28 }}
-              className="text-3xl font-semibold tracking-tight lg:text-5xl"
-            >
-              Transforming complex data &amp; AI workflows into{" "}
-              <span className="text-accent">production-ready systems.</span>
-            </motion.h1>
+            <h1 className="text-3xl font-semibold tracking-tight lg:text-5xl">
+              {heading.split("").map((char, i) => (
+                <span
+                  key={`h-${i}`}
+                  className="inline-block"
+                  style={{
+                    animation: `heroLetter ${duration}s ease-in-out ${(
+                      i * stagger
+                    ).toFixed(2)}s infinite`,
+                    animationFillMode: "forwards",
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+              <span className="text-accent">
+                {accent.split("").map((char, i) => (
+                  <span
+                    key={`a-${i}`}
+                    className="inline-block"
+                    style={{
+                      animation: `heroLetter ${duration}s ease-in-out ${(
+                        (heading.length + i) * stagger
+                      ).toFixed(2)}s infinite`,
+                      animationFillMode: "forwards",
+                    }}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </span>
+                ))}
+              </span>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -65,8 +89,7 @@ export function HeroSection() {
               transition={{ delay: 0.35 }}
               className="max-w-xl text-sm text-fg-muted sm:text-base"
             >
-              Where distributed systems, AI security, and cloud engineering
-              meet real-world impact.
+              Transforming complex data & AI workflows into scalable, production-ready systems
             </motion.p>
           </div>
 
@@ -115,9 +138,10 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55 }}
-            className="text-[11px] uppercase tracking-[0.2em] text-fg-muted"
+            className="text-[10px] uppercase tracking-[0.2em] text-fg-muted"
           >
-            Cloud-native · LLM Governance · Federated Learning · Big Data
+            Distributed Systems · Cloud-Native Engineering · ML Infrastructure · AI Security · Big Data
+
           </motion.div>
         </div>
 
