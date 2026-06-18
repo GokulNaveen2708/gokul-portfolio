@@ -11,7 +11,10 @@ export interface Project {
   category: ProjectCategory;
   githubUrl?: string;
   liveUrl?: string;
-  image?: string;       // hero image path (optional)
+  image?: string;
+  problemStatement?: string;
+  technicalApproach?: string;
+  whatILearned?: string;
 }
 
 export interface Experience {
@@ -20,8 +23,9 @@ export interface Experience {
   location: string;
   start: string;
   end: string;
-  impact: string;     // concise impact metric/headline
-  highlights: string[]; // array of 3 short highlight bullets
-  logo?: string;      // path to logo image in /public
-  website?: string;   // optional link to company site
+  impact: string;
+  highlights: string[];
+  responsibilities?: string[];
+  logo?: string;
+  website?: string;
 }

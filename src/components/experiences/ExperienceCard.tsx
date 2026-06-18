@@ -7,121 +7,135 @@ import type { Experience } from "@/lib/types";
 
 interface ExperienceCardProps {
   experience: Experience;
+  index: number;
 }
 
-export function ExperienceCard({ experience }: ExperienceCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const { company, role, location, start, end, logo, website, impact, highlights } = experience;
-  const initials = company
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("");
+export function ExperienceCard({ experience, index }: ExperienceCardProps) {
+  const [expanded, setExpanded] = useState(false);
+  const {
+    company,
+    role,
+    location,
+    start,
+    end,
+    logo,
+    website,
+    impact,
+    highlights,
+    responsibilities,
+  } = experience;
 
   return (
-    <div
-      className="h-64 cursor-pointer perspective"
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
-      <div
-        className={`relative w-full h-full transition-transform duration-500 transform card-inner ${
-          isFlipped ? "is-flipped" : ""
-        }`}
-        style={{
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-        }}
-      >
-        {/* Front of card */}
-        <div
-          className="absolute w-full h-full bg-gradient-to-br from-white/5 via-white/10 to-transparent border border-white/10 rounded-2xl p-6 flex flex-col justify-between overflow-hidden group hover:border-white/20 hover:bg-white/10 transition card-face front"
-        >
-          <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/20 blur-[50px] transition duration-500 group-hover:bg-accent/30" />
+    <div className="relative">
+      {/* Timeline dot */}
+      <div className="absolute -left-8 sm:-left-12 top-1 flex items-center justify-center">
+        <div className="h-3 w-3 rounded-full bg-accent/60 border-2 border-bg ring-4 ring-accent/10" />
+      </div>
 
-          <div className="relative z-10 space-y-4">
-            {/* Logo */}
-            <div className="h-16 w-16 rounded-2xl border border-white/10 bg-white/5 overflow-hidden flex-shrink-0">
-              {logo ? (
-                <div className="relative h-full w-full">
-                  <Image
-                    src={logo}
-                    alt={`${company} logo`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-xs font-semibold text-fg-muted">
-                  {initials}
-                </span>
-              )}
-            </div>
-
-            {/* Role & Company */}
-            <div>
-              <p className="text-xl font-semibold text-white">{role}</p>
-              <p className="text-sm text-fg-muted">{company}</p>
-            </div>
-
-            {/* Location & Duration */}
-            <div className="text-xs text-fg-muted/70 space-y-1">
-              <p>{location}</p>
-              <p>
-                {start} – {end}
-              </p>
-            </div>
+      {/* Card */}
+      <div className="glass-card p-6 cursor-pointer" onClick={() => setExpanded(!expanded)}>
+        <div className="flex items-start gap-4">
+          {/* Logo */}
+          <div className="h-14 w-14 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden flex-shrink-0">
+            {logo ? (
+              <div className="relative h-full w-full">
+                <Image
+                  src={logo}
+                  alt={`${company} logo`}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <span className="flex h-full w-full items-center justify-center text-xs font-semibold text-fg-muted">
+                {company.split(" ").slice(0, 2).map((w) => w[0]).join("")}
+              </span>
+            )}
           </div>
 
-          {/* Flip hint */}
-          <div className="text-xs text-fg-muted/50 text-center mt-4">
-            Hover to flip
-          </div>
-        </div>
+          {/* Header info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <p className="text-lg font-semibold text-white">{role}</p>
+                <p className="text-sm text-fg-muted">{company}</p>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <p className="text-xs text-fg-muted/70">{location}</p>
+                <p className="text-xs text-fg-muted/70">
+                  {start} – {end}
+                </p>
+              </div>
+            </div>
 
-        {/* Back of card */}
-        <div
-          className="absolute w-full h-full bg-gradient-to-br from-accent/10 via-accent/5 to-transparent border border-accent/30 rounded-2xl p-6 flex flex-col justify-between overflow-hidden card-face back"
-          style={{ transform: "rotateY(180deg)" }}
-        >
-          <div className="relative z-10 space-y-3">
             {/* Impact headline */}
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-accent/80 mb-2">
-                Key Impact
-              </p>
-              <p className="text-sm font-semibold text-white leading-relaxed">
-                {impact}
-              </p>
+            <div className="mt-3 px-3 py-2 rounded-lg bg-accent/[0.06] border border-accent/10">
+              <p className="text-xs text-accent font-medium">{impact}</p>
             </div>
 
-            {/* Highlights */}
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-fg-muted/70 mb-2">
-                Highlights
-              </p>
-              <ul className="space-y-1 text-xs text-fg-muted">
-                {highlights?.map((highlight, idx) => (
-                  <li key={idx} className="leading-relaxed">
-                    • {highlight}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Highlights (always visible) */}
+            <ul className="mt-3 space-y-1">
+              {highlights.map((h, idx) => (
+                <li
+                  key={idx}
+                  className="text-xs text-fg-muted flex items-start gap-2"
+                >
+                  <span className="text-accent/60 mt-0.5">▸</span>
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Expanded responsibilities */}
+            {responsibilities && responsibilities.length > 0 && (
+              <>
+                <div
+                  className={`overflow-hidden transition-all duration-500 ${
+                    expanded ? "max-h-[600px] opacity-100 mt-4" : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-fg-muted/60 mb-2">
+                    Detailed Responsibilities
+                  </p>
+                  <ul className="space-y-2">
+                    {responsibilities.map((r, idx) => (
+                      <li
+                        key={idx}
+                        className="text-xs text-fg-muted leading-relaxed flex items-start gap-2"
+                      >
+                        <span className="text-accent/40 mt-0.5 flex-shrink-0">•</span>
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button
+                  className="mt-3 text-[10px] uppercase tracking-[0.15em] text-accent/70 hover:text-accent transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpanded(!expanded);
+                  }}
+                >
+                  {expanded ? "Show less ↑" : "Show more ↓"}
+                </button>
+              </>
+            )}
+
+            {/* Visit link */}
+            {website && (
+              <Link
+                href={website}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block mt-3 text-xs font-semibold text-accent/70 hover:text-accent transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Visit site →
+              </Link>
+            )}
           </div>
-
-          {/* Visit link */}
-          {website && (
-            <Link
-              href={website}
-              target="_blank"
-              rel="noreferrer"
-              className="text-xs font-semibold text-accent hover:text-accent/80 transition mt-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Visit site →
-            </Link>
-          )}
         </div>
       </div>
     </div>

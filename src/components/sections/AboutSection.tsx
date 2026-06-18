@@ -1,147 +1,211 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { MotionSection } from "@/components/layout/MotionSection";
-import { TECH_STACKS } from "@/lib/data/techStacks";
+import { StudRow, BrickRow } from "@/components/lego/StudRow";
+import { FloatingMinifigs } from "@/components/lego/LegoMinifig";
+import { BackgroundBricks } from "@/components/lego/BackgroundBricks";
+import { LegoLaptop } from "@/components/lego/LegoLaptop";
+
+const quickStats = [
+  { label: "MS @ RIT",        color: "#7A9CB3" },
+  { label: "2+ Yrs Exp",      color: "#53443D" },
+  { label: "Seattle, WA",     color: "#AD7556" },
+];
 
 export function AboutSection() {
-  const [currentStack, setCurrentStack] = useState(0);
-  const activeStack = TECH_STACKS[currentStack];
-
-  // Auto-rotate carousel every 6 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentStack((prev) => (prev + 1) % TECH_STACKS.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const item = { hidden: { opacity: 0, scale: 0.96 }, show: { opacity: 1, scale: 1 } };
-
   return (
-    <MotionSection id="about" title="ABOUT" subtitle="Who I am & what I build">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* LEFT: intro + capabilities — match right side height */}
-        <div className="lg:col-span-2 flex flex-col h-full">
-          <article className="rounded-2xl border border-white/8 bg-gradient-to-br from-white/6 via-white/10 to-transparent p-6 backdrop-blur-[20px] shadow-2xl shadow-accent/8 flex-1 flex flex-col">
-            <h3 className="text-3xl font-bold text-white">Hi, I&apos;m Gokul</h3>
-            <p className="mt-2 italic text-fg-muted">I build resilient distributed systems and pragmatic ML infra.</p>
+    <section
+      id="about"
+      className="relative py-28 overflow-hidden baseplate-bg-tan"
+    >
+      {/* Decorative large background bricks */}
+      <BackgroundBricks section="about" />
+      <FloatingMinifigs section="about" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <div className="mt-4 text-sm text-fg-muted flex-1">
-              <p>
-                I take ambiguous problems and design systems that stay reliable
-                at scale event-driven backends, observability-first services,
-                and production-ready ML pipelines. I prioritize clear contracts,
-                measurable SLOs, and simple, testable primitives.
-              </p>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <motion.div
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                variants={item}
-                className="rounded-2xl border border-white/8 bg-white/5 p-4 hover:border-accent/50 transition group cursor-pointer"
-              >
-                <p className="text-sm font-semibold text-white group-hover:text-accent transition">Distributed Systems</p>
-                <p className="mt-2 text-xs text-fg-muted group-hover:text-fg transition">Service boundaries, async contracts, gRPC, Kafka, and high-throughput APIs.</p>
-              </motion.div>
-
-              <motion.div
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={item}
-                className="rounded-2xl border border-white/8 bg-white/5 p-4 hover:border-accent/50 transition group cursor-pointer"
-              >
-                <p className="text-sm font-semibold text-white group-hover:text-accent transition">Data & ML Infrastructure</p>
-                <p className="mt-2 text-xs text-fg-muted group-hover:text-fg transition">ML pipelines, model deployment, monitoring, and secure data flows.</p>
-              </motion.div>
-            </div>
-
-            {/* Social Links & Resume */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href="https://www.linkedin.com/in/gokul-naveen/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-accent/10 transition group"
-              >
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="LinkedIn" className="h-4 w-4 invert" />
-                <span className="text-sm text-fg-muted group-hover:text-accent transition">LinkedIn</span>
-              </a>
-
-              <a
-                href="https://github.com/GokulNaveen2708"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-accent/10 transition group"
-              >
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" className="h-4 w-4 invert" />
-                <span className="text-sm text-fg-muted group-hover:text-accent transition">GitHub</span>
-              </a>
-
-              <a
-                href="https://drive.google.com/file/d/1Vdu4-khWJya5zIyRFefEbLQeo5si-qhT/view?usp=drive_link"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-accent/10 transition group"
-              >
-                <span className="text-sm font-semibold text-fg-muted group-hover:text-accent transition">Resume</span>
-              </a>
-            </div>
-          </article>
-        </div>
-
-        {/* RIGHT: rotating tech stack carousel */}
-        <aside className="lg:col-span-1 flex flex-col h-full">
-          {/* Stack carousel with rotation effect */}
-          <div className="flex-1 flex flex-col rounded-2xl border border-white/8 bg-gradient-to-br from-white/6 to-transparent p-6 backdrop-blur-sm shadow-lg shadow-white/5">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-fg-muted group-hover:text-accent transition">{activeStack.title}</h4>
-              <div className="flex gap-1">
-                {TECH_STACKS.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentStack(idx)}
-                    className={`h-2 w-2 rounded-full transition ${
-                      idx === currentStack ? "bg-accent w-6" : "bg-white/20 hover:bg-white/40"
-                    }`}
-                    aria-label={`Stack ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Tech grid with consolidated animation - fixed 4 cols layout */}
-            <motion.div
-              key={currentStack}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex-1 flex items-start"
+        {/* Section label */}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-end gap-4 mb-16"
+        >
+          <div className="flex items-center gap-3">
+            <BrickRow count={2} studs={2} color="#AD7556" size={22} />
+            <h2
+              className="text-xs font-black uppercase tracking-[0.3em]"
+              style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif", fontSize: "0.8rem" }}
             >
-              <div className="w-full grid grid-cols-4 gap-3">
-                {activeStack.items.map((tech) => (
-                  <button
-                    key={tech.name}
-                    className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/6 via-white/3 to-transparent p-3 backdrop-blur-sm hover:border-accent/50 transition-colors group aspect-square"
-                    aria-label={tech.name}
-                  >
-                    <div className="h-10 w-10 flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                      <img src={tech.src} alt={tech.name} className="h-6 w-6 object-contain" />
-                    </div>
-                    <span className="mt-2 text-[9px] text-fg-muted group-hover:text-accent text-center line-clamp-2 transition-colors">{tech.name}</span>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
+              About the Builder
+            </h2>
           </div>
-        </aside>
+          <div style={{ marginBottom: -6, opacity: 0.88 }}>
+            <LegoLaptop size={0.38} animated={false} />
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+          {/* ── LEFT: Photo ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, type: "spring", stiffness: 120 }}
+            className="lg:col-span-4 flex flex-col items-center gap-4"
+          >
+            {/* Tan brick photo frame */}
+            <div
+              className="relative w-full max-w-xs"
+              style={{
+                backgroundColor: "#AD7556",
+                borderRadius: 12,
+                padding: 4,
+                boxShadow: "6px 6px 0 #AD7556, 12px 12px 0 #AD7556, 0 20px 50px rgba(0,0,0,0.4)",
+              }}
+            >
+              {/* Top studs */}
+              <div className="flex gap-2 px-3 pt-2 pb-1">
+                <BrickRow count={2} studs={2} color="#AD7556" size={22} />
+              </div>
+
+              {/* Photo */}
+              <div
+                className="relative w-full overflow-hidden"
+                style={{ borderRadius: 8, aspectRatio: "4/5", backgroundColor: "#FDFCFA" }}
+              >
+                <Image
+                  src="/DisplayPicture.jpg"
+                  alt="Gokul Naveen"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 80vw, 300px"
+                />
+              </div>
+
+              {/* Bottom studs */}
+              <div className="flex gap-2 px-3 pt-1 pb-2">
+                <BrickRow count={2} studs={2} color="#AD7556" size={22} />
+              </div>
+            </div>
+
+            {/* Name label */}
+            <div
+              className="text-center px-6 py-3 rounded-lg w-full max-w-xs"
+              style={{
+                backgroundColor: "#FDFCFA",
+                border: "1px solid rgba(83,68,61,0.2)",
+              }}
+            >
+              <p className="font-black text-lg" style={{ color: "#AD7556" }}>Gokul Naveen</p>
+              <p className="text-sm font-semibold mt-0.5" style={{ color: "#7A9CB3" }}>Software Engineer</p>
+            </div>
+
+            {/* Quick stats */}
+            <div className="flex flex-wrap gap-2 justify-center max-w-xs">
+              {quickStats.map((s) => (
+                <span
+                  key={s.label}
+                  className="text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded"
+                  style={{ backgroundColor: s.color, color: "#53443D" }}
+                >
+                  {s.label}
+                </span>
+              ))}
+            </div>
+
+
+          </motion.div>
+
+          {/* ── RIGHT: Bio panel ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.15, type: "spring", stiffness: 120 }}
+            className="lg:col-span-8"
+          >
+            {/* Slate gray brick panel */}
+            <div
+              className="rounded-xl overflow-hidden"
+              style={{
+                backgroundColor: "#FDFCFA",
+                border: "1px solid rgba(122,156,179,0.3)",
+                boxShadow: "6px 6px 0 #E8E0D0, 0 20px 60px rgba(0,0,0,0.3)",
+              }}
+            >
+              {/* Panel header */}
+              <div
+                className="px-8 py-4 flex items-center gap-3"
+                style={{ backgroundColor: "#7A9CB3" }}
+              >
+                <BrickRow count={3} studs={1} color="#AD7556" size={18} />
+                <span
+                  className="ml-auto text-xs font-black uppercase tracking-[0.3em]"
+                  style={{ color: "#53443D", fontFamily: "Fredoka One, sans-serif" }}
+                >
+                  The Builder&apos;s Blueprint
+                </span>
+              </div>
+
+              <div className="px-8 py-8 space-y-8">
+                {/* Bio */}
+                <p
+                  className="text-xl leading-relaxed font-semibold"
+                  style={{ color: "#AD7556" }}
+                >
+                  I&apos;m a Software Engineer who takes ambiguous, large-scale problems
+                  and builds systems that{" "}
+                  <span style={{ color: "#53443D" }}>stay reliable under pressure.</span>
+                </p>
+                <p className="text-base leading-relaxed font-semibold" style={{ color: "#7A9CB3" }}>
+                  With an MS in Computer Science from RIT and 2+ years across Accenture, RIT,
+                  and Reliable Software, I specialize in{" "}
+                  <span style={{ color: "#AD7556" }}>distributed systems, event-driven architectures,</span>{" "}
+                  and{" "}
+                  <span style={{ color: "#AD7556" }}>ML infrastructure</span>{" "}
+                  — building production systems that process millions of jobs and transactions daily.
+                </p>
+                <p className="text-base leading-relaxed font-semibold" style={{ color: "#7A9CB3" }}>
+                  Currently at <span style={{ color: "#53443D" }}>Reliable Software in Seattle, WA</span>,
+                  where I own a distributed job-orchestration platform automating 1M+ jobs/month across 40+
+                  engineering teams.
+                </p>
+
+                {/* Highlight bullets */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t" style={{ borderColor: "rgba(122,156,179,0.2)" }}>
+                  {[
+                    "Event-driven & distributed systems",
+                    "ML pipelines & AI infrastructure",
+                    "Cloud-native (AWS, GCP, Kubernetes)",
+                    "Observability & production reliability",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <span
+                        className="stud flex-shrink-0"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: "#AD7556",
+                          boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.3)",
+                        }}
+                      />
+                      <span className="text-sm font-bold" style={{ color: "#53443D" }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom stud footer */}
+              <div className="px-8 py-3" style={{ backgroundColor: "#F5F3EC" }}>
+                <BrickRow count={5} studs={2} color="#7A9CB3" size={16} className="opacity-40" />
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </MotionSection>
+    </section>
   );
 }

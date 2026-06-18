@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 interface MotionSectionProps {
   id: string;
@@ -16,23 +15,41 @@ export function MotionSection({
   subtitle,
   children,
 }: MotionSectionProps) {
+  const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { rootMargin: "0px 0px -80px 0px", threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.section
+    <section
       id={id}
-      className="py-16 sm:py-24"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      ref={ref}
+      className={`py-16 sm:py-24 fade-up ${visible ? "is-visible" : ""}`}
     >
       <div className="mx-auto max-w-5xl">
         {title && (
-          <header className="mb-8">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <header className="mb-10">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {title}
             </h2>
             {subtitle && (
-              <p className="mt-2 text-sm text-fg-muted sm:text-base">
+              <p className="mt-2 text-base text-fg-muted sm:text-lg">
                 {subtitle}
               </p>
             )}
@@ -40,6 +57,6 @@ export function MotionSection({
         )}
         {children}
       </div>
-    </motion.section>
+    </section>
   );
 }

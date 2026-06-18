@@ -1,107 +1,987 @@
-/* app/globals.css */
+/* app/globals.css — LEGO Theme */
 
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap");
 @import "tailwindcss";
 
-/* Optional: use class-based dark mode like Tailwind v3 (html.dark ...) */
-@custom-variant dark (&:where(.dark, .dark *));
 
-/* Your design system: semantic colors + radius */
+/* ── LEGO Design Tokens — Coastal Light Palette ── */
 @theme {
-  --color-bg: #020617;
-  --color-bg-soft: #020617;
-  --color-bg-elevated: #020617;
+  /* Chambray · Terracotta · Sandstone · Muslin · Clove */
+  --color-space-cadet: #EBE5D8;
+  --color-slate-gray:  #7A9CB3;
+  --color-tan:         #AD7556;
+  --color-coffee:      #AD7556;
+  --color-caput:       #53443D;
 
-  --color-fg: #f9fafb;
-  --color-fg-muted: #9ca3af;
+  /* Semantic aliases */
+  --color-bg:          #F1EFE6;
+  --color-bg-soft:     #F5F3EC;
+  --color-bg-elevated: #FDFCFA;
 
-  --color-accent: #6366f1;
+  --color-fg:          #53443D;
+  --color-fg-muted:    #AD7556;
 
-  --radius-2xl: 1.25rem;
+  --color-accent:      #AD7556;
+  --color-accent-bright: #DCCFB8;
+
+  /* Brick 3D shadows */
+  --brick-top-light: 8px;
+  --brick-side-dark: 6px;
 }
 
-/* Browser hint: treat the UI as dark by default */
+/* ── Root ── */
 :root {
-  color-scheme: dark;
-}
-
-/* Global defaults */
-body {
-  @apply text-fg antialiased;
-
-  background-color: #020617;
-
-  background-image:
-    /* Top left subtle glow */
-    radial-gradient(
-      circle at 20% 15%,
-      rgba(80, 80, 120, 0.15),
-      rgba(0, 0, 0, 0) 45%
-    ),
-
-    /* Bottom right blueish gloss */
-    radial-gradient(
-      circle at 75% 75%,
-      rgba(50, 80, 180, 0.18),
-      rgba(0, 0, 0, 0) 55%
-    ),
-
-    /* Soft vignette */
-    radial-gradient(
-      circle at center,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.5) 100%
-    ),
-
-    /* Noise texture */
-    url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iIzAwMCIvPjxnIG9wYWNpdHk9Ii4wNiI+PHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMSIgeD0iNTUiIHk9IjYwIiBmaWxsPSIjZmZmIi8+PHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMSIgeD0iMTgwIiB5PSIyMDAiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+");
-
-  background-size: cover;
-  background-blend-mode: overlay;
+  color-scheme: light;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-/* Flip card helpers */
-.perspective {
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
-}
-.card-inner {
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-}
-.card-face {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.card-face.front {
-  transform: rotateY(0deg);
-  z-index: 2;
-}
-.card-face.back {
-  transform: rotateY(180deg);
-  z-index: 1;
+/* ── Global body ── */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: "Nunito", system-ui, sans-serif;
+  antialiased: true;
+  overflow-x: hidden;
 }
 
-/* Per-letter hero heading animation */
-@keyframes heroLetter {
+/* ── Baseplate backgrounds — clean solid colors ── */
+.baseplate-bg       { background-color: #F5F3EC; }
+.baseplate-bg-tan   { background-color: #DCCFB8; }
+.baseplate-bg-dark  { background-color: #F1EFE6; }
+.baseplate-bg-caput { background-color: #EBE5D8; }
+
+/* ── LEGO 3D Brick (generic) ── */
+.lego-brick {
+  position: relative;
+  border-radius: 4px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lego-brick:hover {
+  transform: translateY(-4px);
+}
+
+/* ── Brick card (large panel) ── */
+.brick-card {
+  border-radius: 8px;
+  border: 1px solid rgba(83,68,61,0.1);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.brick-card:hover {
+  transform: translateY(-5px) translateX(-2px);
+  box-shadow:
+    6px 5px 0 rgba(0,0,0,0.35),
+    0 24px 60px rgba(0,0,0,0.4);
+}
+
+/* ── 3D Brick Button — isometric faces matching floating LegoBrickSVG ── */
+.brick-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  /* Bottom depth + right face */
+  box-shadow:
+    6px 0   0 rgba(0,0,0,0.28),
+    0   7px 0 rgba(0,0,0,0.38),
+    6px 7px 0 rgba(0,0,0,0.32),
+    0   12px 24px rgba(0,0,0,0.28);
+}
+
+/* Top face — lighter, offset right (isometric) */
+.brick-btn::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 6px;
+  right: -6px;
+  height: 7px;
+  background: inherit;
+  filter: brightness(1.42);
+  border-radius: 3px 3px 0 0;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+
+/* Right face — darker, offset down */
+.brick-btn::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  bottom: -7px;
+  width: 6px;
+  background: inherit;
+  filter: brightness(0.52);
+  clip-path: polygon(0% 7px, 100% 0%, 100% 100%, 0% calc(100% - 7px));
+}
+
+.brick-btn:hover {
+  transform: translateY(-3px) translateX(-2px);
+  box-shadow:
+    8px 0   0 rgba(0,0,0,0.28),
+    0   10px 0 rgba(0,0,0,0.38),
+    8px 10px 0 rgba(0,0,0,0.32),
+    0   18px 32px rgba(0,0,0,0.32);
+}
+
+.brick-btn:active {
+  transform: translateY(5px) translateX(4px);
+  box-shadow:
+    2px 0   0 rgba(0,0,0,0.25),
+    0   2px 0 rgba(0,0,0,0.3),
+    2px 2px 0 rgba(0,0,0,0.25);
+}
+
+.brick-btn-primary {
+  background-color: var(--color-caput);
+  color: var(--color-tan);
+}
+
+.brick-btn-outline {
+  background-color: transparent;
+  color: var(--color-tan);
+  box-shadow:
+    6px 0   0 rgba(0,0,0,0.25),
+    0   7px 0 rgba(0,0,0,0.3),
+    6px 7px 0 rgba(0,0,0,0.28),
+    inset 0 0 0 2px var(--color-tan);
+}
+
+.brick-btn-outline:hover {
+  background-color: rgba(173,117,86,0.10);
+}
+
+/* ── Stud dot ── */
+.stud {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.2);
+}
+
+/* ── Section heading style ── */
+.lego-section-label {
+  font-family: "Fredoka One", sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-tan);
+}
+
+/* ── Brick drop animation ── */
+@keyframes brick-drop {
   0% {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(-40px) scale(0.9);
   }
-  18% {
-    opacity: 1;
-    transform: translateY(0);
+  60% {
+    transform: translateY(6px) scale(1.02);
   }
-  82% {
-    opacity: 1;
-    transform: translateY(0);
+  80% {
+    transform: translateY(-3px) scale(0.99);
   }
   100% {
-    opacity: 0;
-    transform: translateY(12px);
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
+.brick-drop {
+  animation: brick-drop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Brick fly-in from left ── */
+@keyframes brick-fly-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-80px) rotate(-8deg);
+  }
+  70% {
+    transform: translateX(6px) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+.brick-fly-left {
+  animation: brick-fly-left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Brick fly-in from right ── */
+@keyframes brick-fly-right {
+  0% {
+    opacity: 0;
+    transform: translateX(80px) rotate(8deg);
+  }
+  70% {
+    transform: translateX(-6px) rotate(-1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+.brick-fly-right {
+  animation: brick-fly-right 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Brick fly-in from top ── */
+@keyframes brick-fly-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  70% {
+    transform: translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brick-fly-top {
+  animation: brick-fly-top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Minifig walk animation ── */
+@keyframes minifig-walk {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(var(--walk-distance, 110vw)); }
+}
+
+/* ── LEGO Train slide animations ── */
+@keyframes lego-train-ltr {
+  from { transform: translateX(-520px); }
+  to   { transform: translateX(1900px); }
+}
+@keyframes lego-train-rtl {
+  from { transform: translateX(1900px); }
+  to   { transform: translateX(-520px); }
+}
+
+@keyframes leg-swing-l {
+  0%, 100% { transform: rotate(-22deg); }
+  50%       { transform: rotate(22deg); }
+}
+
+@keyframes leg-swing-r {
+  0%, 100% { transform: rotate(22deg); }
+  50%       { transform: rotate(-22deg); }
+}
+
+@keyframes arm-swing-l {
+  0%, 100% { transform: rotate(-24deg); }
+  50%       { transform: rotate(24deg); }
+}
+
+@keyframes arm-swing-r {
+  0%, 100% { transform: rotate(24deg); }
+  50%       { transform: rotate(-24deg); }
+}
+
+/* Single left-arm wave — arm lifts UP (negative = counter-clockwise toward head) */
+@keyframes lego-arm-wave {
+  0%, 100%  { transform: rotate(0deg); }
+  25%        { transform: rotate(-68deg); }
+  50%        { transform: rotate(-52deg); }
+  75%        { transform: rotate(-68deg); }
+}
+
+/* Idle: whole body gentle sway (look around) */
+@keyframes body-look {
+  0%, 30%, 100% { transform: rotate(0deg); }
+  12%            { transform: rotate(-7deg); }
+  55%            { transform: rotate(7deg); }
+  72%            { transform: rotate(7deg); }
+  88%            { transform: rotate(0deg); }
+}
+
+/* Shoulder press — left arm swings up-left, right arm up-right */
+/* Left arm natural vector is (-11,19) from pivot (5,40).            */
+/* CW rotation +105°→+140° takes it from wide-low to overhead-left.  */
+@keyframes arm-press-l {
+  0%, 100% { transform: rotate(105deg); }
+  45%      { transform: rotate(140deg); }
+}
+/* Right arm natural vector is (+11,19) from pivot (39,40).           */
+/* CCW rotation -115°→-155° mirrors left arm to overhead-right.       */
+@keyframes arm-press-r {
+  0%, 100% { transform: rotate(-115deg); }
+  45%      { transform: rotate(-155deg); }
+}
+/* Barbell rides ±3px matching the hand arc at 130°→175° */
+@keyframes barbell-press {
+  0%, 100% { transform: translateY(3px); }
+  45%      { transform: translateY(-3px); }
+}
+
+/* Gentle bounce */
+@keyframes fig-bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+/* Float: rise/fall with slight tilt */
+@keyframes fig-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%       { transform: translateY(-14px) rotate(2deg); }
+}
+
+/* legacy alias used elsewhere */
+@keyframes arm-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25%       { transform: rotate(-65deg); }
+  75%       { transform: rotate(-65deg); }
+}
+
+/* ── Counter count-up animation ── */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Fade in up ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  animation: fade-up 0.6s ease forwards;
+}
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-coffee);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-tan);
+}
+
+/* ══════════════════════════════════════════════════════
+   CSS LEGO MINIFIG — .lf-* namespace
+   Based on authentic LEGO proportions with 3D CSS shading
+   Uses CSS custom properties for theming:
+     --lf-skin, --lf-upper, --lf-lower
+   Internal em unit = 4px (set on .lf-minifig)
+   ══════════════════════════════════════════════════════ */
+
+.lf-minifig {
+  position: relative;
+  /* 1em = 4px → figure is ~75px wide × ~130px tall at scale=1 */
+  font-size: 4px;
+  width: 18.75em;
+  height: 30em;
+  perspective: 200px;
+  transform-style: preserve-3d;
+  overflow: visible;
+  /* default colors — overridden via inline style */
+  --lf-skin: hsl(50, 90%, 50%);
+  --lf-upper: hsl(200, 0%, 90%);
+  --lf-lower: hsl(200, 0%, 90%);
+}
+
+/* ── HEAD ── */
+.lf-head {
+  position: absolute;
+  z-index: 2;
+  top: 2.25em;
+  left: 50%;
+  width: 7.25em;
+  height: 6.25em;
+  transform: translateX(-50%);
+  background-color: var(--lf-skin);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.15) 95%, rgba(0,0,0,0.3)),
+    linear-gradient(to right, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2), rgba(255,255,255,0));
+  border-radius: 1.5em;
+  transition: transform 400ms;
+}
+
+/* Head stud (top knob) */
+.lf-head::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -1.25em;
+  width: 3.5em;
+  height: 1.25em;
+  transform: translateX(-50%);
+  background-color: var(--lf-skin);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0) 30%),
+    linear-gradient(to right, rgba(255,255,255,0) 70%, rgba(255,255,255,0.25) 80%, rgba(255,255,255,0) 90%);
+  border-radius: 0.25em 0.25em 0 0;
+}
+
+/* Neck connector */
+.lf-head::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.875em;
+  width: 4.5em;
+  height: 1em;
+  transform: translateX(-50%);
+  background-color: var(--lf-skin);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.05) 50%),
+    linear-gradient(to right, rgba(255,255,255,0) 70%, rgba(255,255,255,0.25) 80%, rgba(255,255,255,0) 90%);
+  border-radius: 0 0 0.125em 0.125em;
+}
+
+/* ── FACES ── */
+.lf-faces-wrap {
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.lf-faces {
+  display: flex;
+  transition: transform 400ms cubic-bezier(0, 0, 0, 1.25);
+}
+
+.lf-face {
+  position: relative;
+  flex: 1 0 100%;
+}
+
+/* Eyes */
+.lf-eye {
+  position: absolute;
+  top: 2.25em;
+  width: 0.75em;
+  height: 0.9375em;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: inset 0 -0.125em 0 0.25em #000;
+}
+
+.lf-eye::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.lf-eye-r { left: 2.25em; }
+.lf-eye-l { right: 2.25em; }
+
+/* Classic face eyes */
+.lf-face-classic .lf-eye {
+  top: 2.4375em;
+  height: 0.75em;
+  background-color: #000;
+  box-shadow: none;
+}
+
+/* Brow */
+.lf-brow {
+  position: absolute;
+  bottom: 0.625em;
+  left: 50%;
+  width: 1.75em;
+  height: 1em;
+  transform-origin: 0 0;
+  transform: translateX(-50%);
+  border: 0.25em solid transparent;
+  border-top-color: #000;
+  border-bottom: none;
+  border-radius: 50% 50% 0 0;
+}
+
+.lf-eye-r .lf-brow { border-left: none; }
+.lf-eye-l .lf-brow { border-right: none; }
+
+/* Mouth */
+.lf-mouth {
+  position: absolute;
+  top: 3.125em;
+  left: 50%;
+  width: 2.5em;
+  height: 1.5em;
+  transform: translateX(-50%);
+  border: 0.25em solid transparent;
+  border-bottom-color: #000;
+  border-radius: 50%;
+}
+
+/* ── Face variants ── */
+
+/* 0: Classic */
+.lf-face-classic .lf-eye {
+  top: 2.4375em;
+  height: 0.75em;
+  background-color: #000;
+  box-shadow: none;
+}
+.lf-face-classic .lf-mouth { top: 2.9375em; }
+
+/* 1: Smile — standard brow + curved mouth */
+.lf-face-smile .lf-mouth { width: 2.8em; }
+
+/* 2: Large smile — big eyes, very happy */
+.lf-face-large-smile .lf-eye { top: 2em; }
+.lf-face-large-smile .lf-mouth {
+  top: 0.125em;
+  width: 3.125em;
+  height: 5em;
+  border: none;
+  border-bottom: 1.5em solid #000;
+  border-radius: 0 0 70% 70%/0 0 50% 50%;
+}
+.lf-face-large-smile .lf-mouth::before {
+  content: '';
+  position: absolute;
+  top: 1.6875em;
+  left: 50%;
+  width: 4.25em;
+  height: 2em;
+  transform: translateX(-50%);
+  border: 0.1875em solid transparent;
+  border-bottom-color: #000;
+  border-radius: 0 0 50% 50%;
+  box-shadow: 0 0.9375em 0 -0.75em #fff;
+}
+
+/* 3: Worried */
+.lf-face-worried .lf-eye {
+  top: 2.4375em;
+  width: 1em;
+  height: 1.125em;
+  box-shadow: inset 0 -0.125em 0 0.3125em #000;
+}
+.lf-face-worried .lf-eye-r { left: 2.125em; }
+.lf-face-worried .lf-eye-l { right: 2.125em; }
+.lf-face-worried .lf-brow {
+  width: 1.25em;
+  height: 0.875em;
+  bottom: 1.25em;
+  border-top: none;
+  border-bottom: 0.25em solid #000;
+  border-radius: 0 0 50% 50%;
+}
+.lf-face-worried .lf-eye-r .lf-brow {
+  margin-left: -0.25em;
+  transform: rotate(-20deg) translateX(-50%) translateZ(0);
+}
+.lf-face-worried .lf-eye-l .lf-brow {
+  margin-left: 0.25em;
+  transform: rotate(20deg) translateX(-50%) translateZ(0);
+}
+.lf-face-worried .lf-mouth {
+  top: 4.5em;
+  width: 2em;
+  height: 1.25em;
+  transform: translateX(-50%) rotate(-10deg) translateZ(0);
+  border-top-color: #000;
+  border-bottom-color: transparent;
+  border-radius: 50% 50% 0 0;
+}
+
+/* 4: Frown */
+.lf-face-frown .lf-eye { top: 2.625em; }
+.lf-face-frown .lf-eye::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 80%;
+  width: 1.25em;
+  height: 1em;
+  transform: translateX(-50%);
+  border: 0.1875em solid transparent;
+  border-bottom-color: #000;
+  border-radius: 50%;
+}
+.lf-face-frown .lf-mouth {
+  top: 4.25em;
+  width: 2.75em;
+  height: 2em;
+  margin-left: -0.125em;
+  transform: translateX(-50%) rotate(-15deg) translateZ(0);
+  border-top-color: #000;
+  border-bottom-color: transparent;
+  border-radius: 50% 50% 0 0;
+}
+
+/* 5: Surprised */
+.lf-face-surprised .lf-eye {
+  top: 2.4375em;
+  width: 1em;
+  height: 1.125em;
+  box-shadow: inset 0 -0.125em 0 0.3125em #000;
+}
+.lf-face-surprised .lf-brow {
+  bottom: 1em;
+  width: 1.5em;
+  border-right: none;
+  border-left: none;
+}
+.lf-face-surprised .lf-eye-r .lf-brow {
+  margin-left: -0.5em;
+  transform: rotate(-15deg) translateX(-50%) translateZ(0);
+}
+.lf-face-surprised .lf-eye-l .lf-brow {
+  margin-left: 0.5em;
+  transform: rotate(15deg) translateX(-50%) translateZ(0);
+}
+.lf-face-surprised .lf-mouth {
+  top: 4em;
+  width: 3.125em;
+  height: 1.625em;
+  background-color: #000;
+  border: none;
+  border-radius: 70% 70% 60% 60%/100% 100% 50% 50%;
+}
+
+/* ── UPPER BODY ── */
+.lf-upper {
+  position: absolute;
+  z-index: 1;
+  top: 9.25em;
+  width: 100%;
+  perspective: 320px;
+  overflow: visible;
+}
+
+/* Shoulder connector top */
+.lf-upper::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 3em;
+  height: 3.5em;
+  transform: translateX(-50%);
+  background-color: var(--lf-skin);
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2), rgba(255,255,255,0) 90%),
+    linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.05) 80%, rgba(0,0,0,0.1));
+  border-radius: 50% 50% 0 0/10% 10% 0 0;
+}
+
+/* Torso-neck join */
+.lf-upper::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -2.75em;
+  width: 2em;
+  height: 2em;
+  transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.9);
+  background-image: linear-gradient(to right, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 80%, rgba(255,255,255,0));
+  border-radius: 50%/10%;
+}
+
+/* ── TORSO ── */
+.lf-torso {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  width: 7.75em;
+  height: 9.125em;
+  transform-origin: top center;
+  transform: translateX(-50%) rotateX(45deg);
+  background-color: var(--lf-upper);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0) 80%, rgba(0,0,0,0.05) 98%, rgba(0,0,0,0.25) 100%);
+  border-radius: 0.5em 0.5em 0.125em 0.125em;
+  box-shadow:
+    inset 0 0.25em 0.25em rgba(255,255,255,0.5),
+    -1.5em 0.5em 1em -1.25em rgba(0,0,0,0.3),
+    1.5em 0.5em 1em -1.25em rgba(0,0,0,0.3);
+}
+
+/* Torso print detail line */
+.lf-torso::after {
+  content: '';
+  position: absolute;
+  top: 35%;
+  left: 15%;
+  right: 15%;
+  height: 0.25em;
+  background: rgba(255,255,255,0.22);
+  border-radius: 1px;
+}
+
+/* ── ARMS ── */
+.lf-arm {
+  position: absolute;
+  top: 4em;
+  width: 3em;
+  height: 5.5em;
+  transform-origin: center 1.5em;
+  background-color: var(--lf-upper);
+  border-radius: 1.5em/1em;
+}
+
+.lf-arm::before {
+  content: '';
+  position: absolute;
+  bottom: 3.5em;
+  left: 0;
+  width: 100%;
+  height: 5.5em;
+  backface-visibility: hidden;
+  transform-origin: center 4.5em;
+  background-color: var(--lf-upper);
+  border-radius: 1.5em/1.5em 1.5em 1em 1em;
+}
+
+.lf-arm::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5em;
+  background-color: var(--lf-upper);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1em rgba(255,255,255,0.2);
+}
+
+.lf-arm-r {
+  left: 50%;
+  margin-left: -6.25em;
+  transform: translateX(-50%) rotate(12deg);
+  box-shadow:
+    inset 0.5em 0.25em 0.375em -0.25em rgba(255,255,255,0.4),
+    inset 0 0 0.75em 0.75em var(--lf-upper),
+    inset 0 0 0 2em rgba(255,255,255,0.15);
+}
+
+.lf-arm-r::before {
+  transform: rotate(14deg);
+  box-shadow:
+    inset 0.75em 0.125em 0.375em -0.5em rgba(255,255,255,0.4),
+    inset 0.25em 1.1em 0.75em 0.75em var(--lf-upper),
+    inset 0 0 0 2em rgba(255,255,255,0.15);
+}
+
+.lf-arm-l {
+  left: 50%;
+  margin-left: 6.25em;
+  transform: translateX(-50%) rotate(-12deg);
+  box-shadow:
+    inset -0.5em 0.25em 0.375em -0.25em rgba(255,255,255,0.4),
+    inset 0 0 0.75em 0.75em var(--lf-upper),
+    inset 0 0 0 2em rgba(255,255,255,0.15);
+}
+
+.lf-arm-l::before {
+  transform: rotate(-14deg);
+  box-shadow:
+    inset -0.75em 0.125em 0.375em -0.5em rgba(255,255,255,0.4),
+    inset -0.25em 1.1em 0.75em 0.75em var(--lf-upper),
+    inset 0 0 0 2em rgba(255,255,255,0.15);
+}
+
+/* ── HAND ── */
+.lf-hand {
+  position: absolute;
+  z-index: 1;
+  top: 80%;
+  left: 50%;
+  width: 1.75em;
+  height: 1.75em;
+  transform: translateX(-50%);
+  background-color: var(--lf-skin);
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.2), rgba(0,0,0,0.075), rgba(255,255,255,0.2));
+  border-radius: 1em/0.5em;
+  box-shadow: 0 -0.125em 0.125em rgba(0,0,0,0.1);
+}
+
+/* Finger grip curve */
+.lf-hand::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 1em;
+  left: 50%;
+  width: 3.5em;
+  height: 3.5em;
+  transform: translateX(-50%);
+  border: 0.75em solid var(--lf-skin);
+  border-bottom-color: transparent;
+  box-shadow: inset 0 0.25em rgba(0,0,0,0.15), inset 0 0.25em var(--lf-skin);
+  border-radius: 50%;
+  filter: brightness(0.9);
+}
+
+/* ── LOWER BODY ── */
+.lf-lower {
+  position: absolute;
+  top: 18.5em;
+  left: 50%;
+  width: 10em;
+  height: 11.75em;
+  transform: translateX(-50%);
+  transition: transform 400ms;
+}
+
+.lf-lower > div {
+  position: absolute;
+  background-color: var(--lf-lower);
+}
+
+.lf-waist {
+  z-index: 1;
+  top: 0;
+  width: 100%;
+  height: 1.5em;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0) 80%, rgba(255,255,255,0.1) 90%, rgba(255,255,255,0.15));
+  border-radius: 0.125em;
+  box-shadow: 0 0.75em 0.75em -0.25em rgba(0,0,0,0.25);
+}
+
+.lf-waist::before,
+.lf-waist::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 3em;
+  height: 3em;
+  transform: translateX(-50%);
+  background-color: var(--lf-lower);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0) 10%),
+    linear-gradient(to right, rgba(255,255,255,0) 20%, rgba(255,255,255,0.25) 25%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.25) 75%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.2)),
+    linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0.15));
+}
+
+.lf-waist::before {
+  margin-left: -2.75em;
+  border-radius: 50% 30% 0 0/100% 30% 0 100%;
+}
+
+.lf-waist::after {
+  margin-left: 2.75em;
+  border-radius: 30% 50% 0% 0%/30% 100% 100% 0%;
+}
+
+.lf-crotch {
+  z-index: 1;
+  top: 1.5em;
+  left: 50%;
+  width: 10%;
+  height: 4.5em;
+  transform: translateX(-50%);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.05) 10%, rgba(0,0,0,0.2) 10%, rgba(255,255,255,0.1), rgba(0,0,0,0.1));
+  border-radius: 0 0 0.25em 0.25em;
+  box-shadow:
+    -0.5em 0 0.25em -0.25em rgba(0,0,0,0.15),
+    0.5em 0 0.25em -0.25em rgba(0,0,0,0.15);
+}
+
+.lf-leg {
+  bottom: 0;
+  left: 50%;
+  width: 4.75em;
+  height: 10.75em;
+  transform: translateX(-50%);
+  background-image:
+    linear-gradient(
+      rgba(0,0,0,0.1) 10%, rgba(255,255,255,0.1) 25%, rgba(0,0,0,0.1) 45%, rgba(0,0,0,0) 50%,
+      rgba(0,0,0,0.05) 65%, rgba(0,0,0,0) 74%, rgba(0,0,0,0.1) 78%,
+      rgba(255,255,255,0.2) 78%, rgba(255,255,255,0) 82%, rgba(0,0,0,0.1)
+    );
+  border-radius: 0.25em 0.25em 0.0625em 0.0625em;
+}
+
+.lf-leg-r {
+  margin-left: -2.75em;
+}
+
+.lf-leg-l {
+  margin-left: 2.75em;
+}
+
+/* ── WALK ANIMATIONS (CSS minifig) ── */
+@keyframes lf-arm-r-walk {
+  0%, 100% { transform: translateX(-50%) rotate(-12deg); }
+  50%       { transform: translateX(-50%) rotate(28deg); }
+}
+@keyframes lf-arm-l-walk {
+  0%, 100% { transform: translateX(-50%) rotate(12deg); }
+  50%       { transform: translateX(-50%) rotate(-28deg); }
+}
+@keyframes lf-leg-r-walk {
+  0%, 100% { transform: translateX(-50%) rotate(-16deg); transform-origin: center top; }
+  50%       { transform: translateX(-50%) rotate(16deg); transform-origin: center top; }
+}
+@keyframes lf-leg-l-walk {
+  0%, 100% { transform: translateX(-50%) rotate(16deg); transform-origin: center top; }
+  50%       { transform: translateX(-50%) rotate(-16deg); transform-origin: center top; }
+}
+
+/* Press (shoulder press) arm animations for CSS minifig */
+/* Single-arm dumbbell press — only arm-l (screen right) lifts.
+   Start: bar at shoulder level (130° = 40° above horizontal).
+   Lockout: nearly straight overhead (175°). */
+/* lf-arm-l is the screen-RIGHT arm. CCW (negative) rotation sweeps
+   the hand OUTWARD to the right then overhead — correct press path. */
+@keyframes lf-arm-l-press {
+  0%, 100% { transform: translateX(-50%) rotate(-115deg); }
+  45%       { transform: translateX(-50%) rotate(-175deg); }
+}
+/* Cancel the arm's CCW rotation so the dumbbell stays horizontal. */
+@keyframes lf-dumbbell-cancel {
+  0%, 100% { transform: translateX(-50%) rotate(115deg); }
+  45%       { transform: translateX(-50%) rotate(175deg); }
+}
+@keyframes lf-arm-r-wave {
+  0%, 100% { transform: translateX(-50%) rotate(-12deg); }
+  30%       { transform: translateX(-50%) rotate(-65deg); }
+  60%       { transform: translateX(-50%) rotate(-48deg); }
+}
+
+/* ── Mobile nav overlay ── */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(241,239,230,0.97);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.mobile-nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
