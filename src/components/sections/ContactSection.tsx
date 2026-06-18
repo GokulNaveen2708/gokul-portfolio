@@ -50,7 +50,7 @@ const contactLinks = [
     id: "resume",
     label: "Download Resume",
     value: "PDF · Updated 2025",
-    href: "/resume.pdf",
+    href: "https://drive.google.com/file/d/1h7hNSM6NLBxgMkwX84H0bmHAyO6L59V7/view?usp=sharing",
     color: "#AD7556",
     desc: "Full work history & technical depth",
     icon: (

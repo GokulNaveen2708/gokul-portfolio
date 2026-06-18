@@ -104,7 +104,7 @@ export function SiteHeader() {
 
             {/* Resume CTA */}
             <a
-              href="/resume.pdf"
+              href="https://drive.google.com/file/d/1h7hNSM6NLBxgMkwX84H0bmHAyO6L59V7/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-3 brick-btn brick-btn-primary text-xs py-2 px-4"
@@ -153,7 +153,7 @@ export function SiteHeader() {
             </button>
           ))}
           <a
-            href="/resume.pdf"
+            href="https://drive.google.com/file/d/1h7hNSM6NLBxgMkwX84H0bmHAyO6L59V7/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 brick-btn brick-btn-primary"
