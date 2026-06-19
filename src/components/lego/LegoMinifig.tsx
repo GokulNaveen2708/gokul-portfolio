@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export type MinifigType =
   | "builder" | "dev" | "spaceman" | "wizard" | "guard"
   | "explorer" | "waver" | "scientist" | "pirate" | "ninja"
-  | "batman" | "gym" | "chef";
+  | "batman" | "gym" | "chef" | "graduate";
 
 const QUIPS: Record<MinifigType, string> = {
   builder:   "Building brick by brick! 🧱",
@@ -22,6 +22,7 @@ const QUIPS: Record<MinifigType, string> = {
   batman:    "I am vengeance! 🦇",
   gym:       "Never skip leg day! 💪",
   chef:      "Full-stack flavor! 🍳",
+  graduate:  "MS achieved! Thesis: shipped. 🎓",
 };
 
 type IdleBehavior = "bob" | "float" | "look" | "wave" | "press";
@@ -31,7 +32,7 @@ interface MinifigConfig {
   upper: string;      // torso + arm color
   lower: string;      // leg color
   hat: string;
-  hatType: "hardhat" | "helmet" | "pointed" | "cap" | "cowboy" | "none" | "ninja" | "batman" | "headband" | "chefhat";
+  hatType: "hardhat" | "helmet" | "pointed" | "cap" | "cowboy" | "none" | "ninja" | "batman" | "headband" | "chefhat" | "gradhat";
   accessory: "laptop" | "wand" | "none" | "dumbbell";
   idleBehavior: IdleBehavior;
   // 0=classic, 1=smile, 2=large-smile, 3=worried, 4=frown, 5=surprised
@@ -52,6 +53,7 @@ const configs: Record<MinifigType, MinifigConfig> = {
   batman:   { skin:"#FFD700", upper:"#1a1a2e", lower:"#1a1a2e", hat:"#1a1a2e", hatType:"batman",   accessory:"none",    idleBehavior:"look",  expression:0 },
   gym:      { skin:"#FFD700", upper:"#c0392b", lower:"#2c3e50", hat:"#e63946", hatType:"headband", accessory:"none",     idleBehavior:"bob",   expression:2 },
   chef:     { skin:"#FFD700", upper:"#f8f9fa", lower:"#e63946", hat:"#ffffff", hatType:"chefhat",  accessory:"none",    idleBehavior:"bob",   expression:1 },
+  graduate: { skin:"#FFD700", upper:"#111111", lower:"#111111", hat:"#111111", hatType:"gradhat",  accessory:"none",    idleBehavior:"float", expression:2 },
 };
 
 // ── Hat rendered as an absolutely positioned overlay on the head ──
@@ -149,6 +151,62 @@ function Hat({ type, color, skin }: { type: string; color: string; skin: string 
       <rect x="13" y="6" width="30" height="12" fill={color} />
       <rect x="10" y="17" width="36" height="5" rx="1.5" fill={color} style={{ filter:"brightness(0.82)" }} />
       <ellipse cx="21" cy="5" rx="7" ry="6" fill="rgba(255,255,255,0.22)" />
+    </svg>
+  );
+
+  if (type === "gradhat") return (
+    /* Realistic black mortarboard — board dramatically wider than the band,
+       tassel hangs from right corner with SVG animateTransform swing */
+    <svg
+      style={{ ...base, top: "-3.2em", width: "11em", height: "5.5em" }}
+      viewBox="0 0 76 32"
+      overflow="visible"
+    >
+      {/* Cap dome / band — below the board */}
+      <rect x="26" y="20" width="24" height="14" rx="6" fill="#1C1C1C" />
+      <rect x="26" y="20" width="24" height="5" rx="5" fill="#2A2A2A" />
+      <ellipse cx="38" cy="34" rx="11" ry="3.5" fill="#0A0A0A" />
+
+      {/* Mortarboard board — wide, clearly overhangs the band */}
+      {/* Top face (slight 3D from above) */}
+      <polygon points="3,18 73,18 69,9 7,9" fill="#1C1C1C" />
+      {/* Right face */}
+      <polygon points="73,18 73,26 69,18 69,9" fill="#0A0A0A" />
+      {/* Front face */}
+      <rect x="3" y="18" width="70" height="8" rx="1.5" fill="#111111" />
+      {/* Top edge highlight */}
+      <rect x="3" y="18" width="70" height="1.5" rx="1" fill="rgba(255,255,255,0.07)" />
+
+      {/* Center button */}
+      <circle cx="38" cy="13" r="3" fill="#AD7556" />
+      <circle cx="38" cy="13" r="1.8" fill="#C4895E" />
+
+      {/* Tassel cord from button → right corner, then hanging with swing animation */}
+      <path d="M 38 13 Q 58 10 69 11" fill="none" stroke="#AD7556" strokeWidth="1.5" strokeLinecap="round" />
+      <g transform="translate(69, 11)">
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="-18;18;-18"
+            dur="2.4s"
+            repeatCount="indefinite"
+          />
+          {/* Cord hanging down */}
+          <line x1="0" y1="0" x2="0" y2="18" stroke="#AD7556" strokeWidth="1.5" strokeLinecap="round" />
+          {/* Knot cap */}
+          <rect x="-4" y="17" width="8" height="6" rx="2.5" fill="#AD7556" />
+          <rect x="-4" y="17" width="8" height="3" rx="2" fill="#C4895E" />
+          {/* Fringe strands */}
+          <line x1="-3" y1="23" x2="-4.5" y2="35" stroke="#C4895E" strokeWidth="1.3" strokeLinecap="round" />
+          <line x1="0"  y1="23" x2="0"    y2="36" stroke="#C4895E" strokeWidth="1.3" strokeLinecap="round" />
+          <line x1="3"  y1="23" x2="4.5"  y2="35" stroke="#C4895E" strokeWidth="1.3" strokeLinecap="round" />
+          {/* Fringe bulbs */}
+          <circle cx="-4.5" cy="35" r="1.8" fill="#AD7556" />
+          <circle cx="0"    cy="36" r="1.8" fill="#AD7556" />
+          <circle cx="4.5"  cy="35" r="1.8" fill="#AD7556" />
+        </g>
+      </g>
     </svg>
   );
 
@@ -356,17 +414,19 @@ interface FigPlacement {
   speed: number;
   delay: number;
   opacity?: number;
+  entrance?: boolean;
+  welcomeMsg?: string;
+  expression?: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
 const sectionThemes: Record<string, FigPlacement[]> = {
   hero: [
-    { type:"spaceman", x:"4%",  y:"65%", scale:1.25, animation:"idle",  speed:4.8, delay:1.0, opacity:0.88 },
-    { type:"builder",  x:"86%", y:"62%", scale:1.4,  animation:"idle",  speed:3.0, delay:0.8, opacity:0.94 },
+    { type:"builder",  x:"72%", y:"62%", scale:1.4,  animation:"idle",  speed:3.0, delay:0.8, opacity:0.94, entrance:true, welcomeMsg:"Hey, welcome! 👷 Let's build something great." },
     { type:"wizard",   x:"80%", y:"16%", scale:1.2,  animation:"float", speed:4.4, delay:0.6, opacity:0.85 },
   ],
   about: [
-    { type:"dev",       x:"1%",  y:"5%",  scale:0.95, animation:"idle",  speed:2,   delay:0,   opacity:0.9  },
-    { type:"builder",   x:"72%", y:"0px", scale:0.8,  animation:"bob",   speed:2.2, delay:0.4, opacity:0.6  },
+    { type:"dev",     x:"28%", y:"0px", scale:0.9, animation:"idle", speed:2,   delay:0,   opacity:0.9, expression:2 },
+    { type:"builder", x:"72%", y:"0px", scale:0.9, animation:"bob",  speed:2.2, delay:0.4, opacity:0.9, expression:2 },
     { type:"brick",     x:"90%", y:"42%", scale:0.6,  animation:"float", speed:4.5, delay:1,   opacity:0.32 },
     { type:"brick",     x:"48%", y:"62%", scale:0.45, animation:"bob",   speed:3,   delay:2,   opacity:0.18 },
   ],
@@ -390,7 +450,6 @@ const sectionThemes: Record<string, FigPlacement[]> = {
   ],
   education: [
     { type:"explorer",  x:"0%",  y:"0px", scale:1.0,  animation:"walk-ltr", speed:20,  delay:0,   opacity:1    },
-    { type:"scientist", x:"74%", y:"0px", scale:0.8,  animation:"idle",     speed:2.5, delay:0.5, opacity:0.65 },
     { type:"brick",     x:"88%", y:"42%", scale:0.65, animation:"float",    speed:6,   delay:1,   opacity:0.28 },
     { type:"brick",     x:"40%", y:"58%", scale:0.5,  animation:"bob",      speed:4,   delay:1.5, opacity:0.18 },
   ],
@@ -401,10 +460,34 @@ const sectionThemes: Record<string, FigPlacement[]> = {
   ],
 };
 
+// ── Wand sparkles: dx/dy in px from tip, ambient + hover burst ──
+const WAND_SPARKS = [
+  { dx:  4, dy: -13, color: "#FFD54F", size: 3.5, delay: 0.00 },
+  { dx: -5, dy: -18, color: "#CE93D8", size: 3.0, delay: 0.28 },
+  { dx:  9, dy:  -7, color: "#FFFFFF", size: 2.5, delay: 0.55 },
+  { dx: -2, dy: -21, color: "#FFD54F", size: 2.5, delay: 0.82 },
+  { dx:  7, dy: -14, color: "#E040FB", size: 3.0, delay: 1.10 },
+  { dx: -8, dy: -10, color: "#FFFFFF", size: 2.0, delay: 1.38 },
+];
+
 // ── Single interactive minifig ──
 function InteractiveMinifig({ placement }: { placement: FigPlacement }) {
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered]   = useState(false);
   const [exploded, setExploded] = useState(false);
+  const [ePhase, setEPhase]     = useState<"pre"|"walking"|"arrived"|"idle">(
+    placement.entrance ? "pre" : "idle"
+  );
+  const [showBubble, setShowBubble] = useState(false);
+
+  useEffect(() => {
+    if (!placement.entrance) return;
+    const t1 = setTimeout(() => setEPhase("walking"),                    1500);
+    const t2 = setTimeout(() => { setEPhase("arrived"); setShowBubble(true); }, 2700);
+    const t3 = setTimeout(() => setShowBubble(false),                    6700);
+    const t4 = setTimeout(() => setEPhase("idle"),                       7200);
+    return () => { [t1, t2, t3, t4].forEach(clearTimeout); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (placement.type === "brick") {
     const colors = ["#AD7556", "#7A9CB3", "#DCCFB8", "#53443D", "#C4916A"];
@@ -426,7 +509,8 @@ function InteractiveMinifig({ placement }: { placement: FigPlacement }) {
     );
   }
 
-  const cfg  = configs[placement.type as MinifigType];
+  const baseCfg = configs[placement.type as MinifigType];
+  const cfg = placement.expression !== undefined ? { ...baseCfg, expression: placement.expression } : baseCfg;
   const quip = QUIPS[placement.type as MinifigType];
   const isWalk = placement.animation === "walk-ltr" || placement.animation === "walk-rtl";
   const isRtl  = placement.animation === "walk-rtl";
@@ -455,6 +539,9 @@ function InteractiveMinifig({ placement }: { placement: FigPlacement }) {
     );
   }
 
+  const isEntering = ePhase === "walking";
+  const isWaving   = ePhase === "arrived";
+
   return (
     <motion.div
       style={{
@@ -462,18 +549,114 @@ function InteractiveMinifig({ placement }: { placement: FigPlacement }) {
         left: placement.x,
         bottom: placement.y,
         width: figWidthPx,
-        opacity: placement.opacity ?? 1,
+        height: figWidthPx * 1.7,
         cursor: "pointer",
         zIndex: hovered ? 10 : 4,
       }}
-      onHoverStart={() => { setHovered(true); setExploded(true); }}
-      onHoverEnd={() => { setHovered(false); setExploded(false); }}
-      whileHover={{ scale: 1.2 }}
-      transition={{ type: "spring", stiffness: 360, damping: 24 }}
+      initial={{
+        x: placement.entrance ? "20vw" : 0,
+        opacity: placement.entrance ? 0 : (placement.opacity ?? 1),
+      }}
+      animate={{
+        x:       ePhase === "pre" ? "20vw" : 0,
+        opacity: ePhase === "pre" ? 0 : (placement.opacity ?? 1),
+        scale:   hovered ? 1.2 : 1,
+      }}
+      transition={isEntering
+        ? {
+            x:       { duration: 1.2, ease: "easeOut" },
+            opacity: { duration: 0.2 },
+            scale:   { type: "spring", stiffness: 360, damping: 24 },
+          }
+        : { type: "spring", stiffness: 360, damping: 24 }
+      }
+      // native events are zoom-agnostic; Framer Motion's onHoverStart/End
+      // does coordinate math that breaks at non-100% browser zoom
+      onMouseEnter={() => { setHovered(true); setExploded(true); }}
+      onMouseLeave={() => { setHovered(false); setExploded(false); }}
     >
-      {/* Speech bubble */}
+      {/* Wand sparkles — ambient glow from wand tip; burst on hover */}
+      {cfg.accessory === "wand" && WAND_SPARKS.map((s, i) => {
+        const mult = hovered ? 2.4 : 1.3;
+        return (
+          <motion.div
+            key={`ws-${i}-${hovered ? 1 : 0}`}
+            animate={{
+              x:       [0, s.dx * mult],
+              y:       [0, s.dy * mult],
+              opacity: [0, hovered ? 1.0 : 0.70, 0],
+              scale:   [0, hovered ? 1.8  : 1.05, 0],
+            }}
+            transition={{
+              duration:    hovered ? 0.42 : 0.90,
+              delay:       s.delay * (hovered ? 0.45 : 1.0),
+              repeat:      Infinity,
+              repeatDelay: hovered ? 0.04 : 0.20,
+              ease:        "easeOut",
+            }}
+            style={{
+              position: "absolute",
+              /* wand tip ≈ 83% from left, 41% from top of the minifig container */
+              left: figWidthPx * 0.83,
+              top:  figWidthPx * 1.7 * 0.41,
+              width:  s.size,
+              height: s.size,
+              borderRadius: "50%",
+              backgroundColor: s.color,
+              boxShadow: `0 0 ${s.size * 2}px ${s.color}`,
+              pointerEvents: "none",
+              zIndex: 16,
+            }}
+          />
+        );
+      })}
+
+      {/* Welcome bubble — floats to the RIGHT of the minifig */}
       <AnimatePresence>
-        {hovered && (
+        {showBubble && (
+          <motion.div
+            key="welcome-bubble"
+            initial={{ opacity: 0, x: -10, scale: 0.78 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -8, scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 420, damping: 26 }}
+            style={{
+              position: "absolute",
+              top: "8%",
+              left: "calc(100% + 18px)",
+              backgroundColor: "#7A9CB3",
+              color: "#FDFCFA",
+              padding: "7px 14px",
+              borderRadius: 10,
+              whiteSpace: "nowrap",
+              fontSize: 12,
+              fontWeight: 800,
+              fontFamily: "Nunito, sans-serif",
+              letterSpacing: "0.02em",
+              boxShadow: "0 4px 18px rgba(0,0,0,0.28), 3px 3px 0 rgba(83,68,61,0.18)",
+              zIndex: 22,
+              pointerEvents: "none",
+            }}
+          >
+            {placement.welcomeMsg ?? "Hey! 👷 Welcome!"}
+            {/* Tail points LEFT toward the minifig */}
+            <div style={{
+              position: "absolute",
+              top: "50%",
+              right: "100%",
+              transform: "translateY(-50%)",
+              width: 0, height: 0,
+              borderTop: "7px solid transparent",
+              borderBottom: "7px solid transparent",
+              borderRight: "14px solid #7A9CB3",
+            }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Hover quip — only shown once the entrance sequence finishes */}
+      <AnimatePresence>
+        {hovered && ePhase === "idle" && (
           <motion.div
             key="bubble"
             initial={{ opacity: 0, y: 8, scale: 0.82 }}
@@ -514,18 +697,36 @@ function InteractiveMinifig({ placement }: { placement: FigPlacement }) {
         )}
       </AnimatePresence>
 
-      <div style={{ transform: `scale(${placement.scale})`, transformOrigin: "bottom left" }}>
-        <CSSLegoFig cfg={cfg} walking={false} hovered={hovered} exploded={exploded} />
-      </div>
+      {/* Excitement jump on arrival, then flip flip back from walk-facing-left */}
+      <motion.div
+        animate={isWaving ? { y: [0, -24, 0, -16, 0, -9, 0, -4, 0] } : { y: 0 }}
+        transition={{ duration: 1.8, ease: "easeOut" }}
+        style={{ transformOrigin: "center bottom" }}
+      >
+        <motion.div
+          animate={{ scaleX: isEntering ? -1 : 1 }}
+          transition={{ duration: 0.28 }}
+          style={{ transformOrigin: "center bottom" }}
+        >
+          <div style={{ transform: `scale(${placement.scale})`, transformOrigin: "bottom left" }}>
+            <CSSLegoFig
+              cfg={cfg}
+              walking={isEntering}
+              hovered={ePhase === "idle" && hovered}
+              exploded={exploded && ePhase === "idle"}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 }
 
 // ── Exported scene component ──
-export function FloatingMinifigs({ section }: { section: keyof typeof sectionThemes }) {
+export function FloatingMinifigs({ section, zIndex = 5 }: { section: keyof typeof sectionThemes; zIndex?: number }) {
   const placements = sectionThemes[section] ?? [];
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 5 }}>
+    <div className="absolute inset-0 pointer-events-none" style={{ zIndex, overflow: "visible" }}>
       {placements.map((p, i) => (
         <div
           key={i}

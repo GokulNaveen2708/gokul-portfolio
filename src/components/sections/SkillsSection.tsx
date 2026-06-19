@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { StudRow, BrickRow } from "@/components/lego/StudRow";
 import { FloatingMinifigs } from "@/components/lego/LegoMinifig";
 import { BackgroundBricks } from "@/components/lego/BackgroundBricks";
-import { LegoBrickStack } from "@/components/lego/LegoBrickStack";
+import { LegoBrickStack }       from "@/components/lego/LegoBrickStack";
+import { LegoGameController }   from "@/components/lego/LegoGameController";
+import { CatPawPrints }         from "@/components/lego/CatPawPrints";
 
 interface Skill {
   name: string;
@@ -227,56 +229,132 @@ function SkillBrick3D({
   );
 }
 
-/* ── One category row ── */
+/* ── One category row — instruction manual step style ── */
 function SkillRow({ cat, rowIdx }: { cat: SkillCategory; rowIdx: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const stepNum = String(rowIdx + 1).padStart(2, "0");
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0 }}
-      animate={inView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.35, delay: rowIdx * 0.05 }}
+      style={{
+        display: "flex",
+        gap: 16,
+        padding: "16px 20px",
+        borderRadius: 10,
+        backgroundColor: "rgba(253,252,250,0.55)",
+        border: `1px solid ${cat.brickColor}28`,
+        boxShadow: `3px 3px 0 ${cat.brickColor}18`,
+      }}
     >
-      {/* Row label */}
-      <div className="flex items-center gap-3 mb-4">
-        <BrickRow count={2} studs={1} color={cat.brickColor} size={16} />
-        <span
-          className="text-xs font-black uppercase tracking-[0.22em]"
-          style={{ color: "#AD7556", opacity: 0.75 }}
+      {/* Step number column */}
+      <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+        <div
+          style={{
+            width: 42,
+            height: 42,
+            borderRadius: 6,
+            backgroundColor: cat.brickColor,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: `2px 2px 0 rgba(0,0,0,0.22)`,
+            flexShrink: 0,
+          }}
         >
-          {cat.label}
-        </span>
+          <span style={{ fontSize: 8, fontWeight: 900, color: "rgba(255,255,255,0.6)", letterSpacing: "0.15em", textTransform: "uppercase" }}>STEP</span>
+          <span style={{ fontSize: 18, fontWeight: 900, color: "#FDFCFA", lineHeight: 1, fontFamily: "Fredoka One, sans-serif" }}>{stepNum}</span>
+        </div>
+        {/* Connector line */}
+        {rowIdx < categories.length - 1 && (
+          <div style={{ width: 2, flex: 1, minHeight: 12, backgroundColor: cat.brickColor, opacity: 0.2, borderRadius: 1 }} />
+        )}
       </div>
 
-      {/* Bricks */}
-      <div className="flex flex-wrap gap-4 items-end">
-        {cat.skills.map((skill, i) => (
-          <SkillBrick3D
-            key={skill.name}
-            skill={skill}
-            color={cat.brickColor}
-            textColor={cat.textColor}
-            index={i + rowIdx * 4}
-            inView={inView}
-          />
-        ))}
+      {/* Content */}
+      <div style={{ flex: 1 }}>
+        <div className="flex items-center gap-2 mb-3">
+          <span
+            className="text-xs font-black uppercase tracking-[0.2em]"
+            style={{ color: cat.brickColor }}
+          >
+            {cat.label}
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-4 items-end">
+          {cat.skills.map((skill, i) => (
+            <SkillBrick3D
+              key={skill.name}
+              skill={skill}
+              color={cat.brickColor}
+              textColor={cat.textColor}
+              index={i + rowIdx * 4}
+              inView={inView}
+            />
+          ))}
+        </div>
       </div>
     </motion.div>
   );
 }
 
+/* ── Bowling Ball SVG ── */
+function BowlingBall({ size = 1 }: { size?: number }) {
+  const D = 48;
+  return (
+    <svg width={D * size} height={D * size} viewBox={`0 0 ${D} ${D}`} style={{ display: "block" }}>
+      {/* Ball body */}
+      <circle cx={24} cy={24} r={22} fill="#1A1A2E" />
+      {/* Shading — lighter arc on top-left */}
+      <radialGradient id="ball-shine" cx="36%" cy="32%" r="55%">
+        <stop offset="0%"  stopColor="rgba(255,255,255,0.28)" />
+        <stop offset="60%" stopColor="rgba(255,255,255,0.04)" />
+        <stop offset="100%" stopColor="rgba(0,0,0,0.0)" />
+      </radialGradient>
+      <circle cx={24} cy={24} r={22} fill="url(#ball-shine)" />
+      {/* Finger holes */}
+      <circle cx={21} cy={18} r={2.5} fill="rgba(0,0,0,0.55)" />
+      <circle cx={28} cy={16} r={2.5} fill="rgba(0,0,0,0.55)" />
+      <circle cx={25} cy={24} r={2.5} fill="rgba(0,0,0,0.55)" />
+      {/* Ground shadow */}
+      <ellipse cx={24} cy={46} rx={18} ry={3.5} fill="rgba(0,0,0,0.18)" />
+    </svg>
+  );
+}
+
 export function SkillsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const sectionInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const [pinActive, setPinActive] = useState(false);
+  const [knocked, setKnocked] = useState(false);
+  const [pinDone, setPinDone] = useState(false);
+
+  useEffect(() => {
+    if (sectionInView && !pinDone) {
+      const t = setTimeout(() => setPinActive(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, [sectionInView, pinDone]);
+
   return (
     <section
+      ref={sectionRef}
       id="skills"
       className="relative py-28 overflow-hidden baseplate-bg-tan"
     >
       {/* Decorative large background bricks */}
       <BackgroundBricks section="skills" />
-      {/* Floating minifigs */}
       <FloatingMinifigs section="skills" />
+      <CatPawPrints />
+      {/* Game controller — bottom right, clear of content */}
+      <div style={{ position: "absolute", bottom: "4%", right: "2%", zIndex: 4, opacity: 0.78, pointerEvents: "none" }}>
+        <LegoGameController size={0.88} color="#53443D" />
+      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section label */}
@@ -287,16 +365,47 @@ export function SkillsSection() {
           className="flex items-end gap-6 mb-4"
         >
           <div className="flex items-center gap-3">
-            <BrickRow count={2} studs={2} color="#AD7556" size={22} />
+            <BrickRow count={2} studs={2} color="#AD7556" size={44} />
             <h2
-              style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif", fontSize: "0.8rem" }}
-              className="text-xs font-black uppercase tracking-[0.3em]"
+              style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif" }}
+              className="text-4xl sm:text-5xl font-black uppercase tracking-[0.06em]"
             >
-              The Build Stack
+              The Skill Stack
             </h2>
           </div>
-          <div style={{ marginBottom: -8 }}>
-            <LegoBrickStack />
+
+          {/* Brick stack + bowling ball */}
+          <div style={{ marginBottom: -8, position: "relative", overflow: "visible", minWidth: 60 }}>
+            <LegoBrickStack forceScatter={knocked} />
+
+            {/* Ball rolls in from right along the ground, hits stack base, once only */}
+            <AnimatePresence>
+              {pinActive && !pinDone && (
+                <motion.div
+                  key="ball"
+                  initial={{ x: 380, rotate: 0 }}
+                  animate={{ x: -10, rotate: -1080 }}
+                  transition={{ duration: 1.1, ease: [0.4, 0, 0.8, 1] }}
+                  onAnimationComplete={() => {
+                    setKnocked(true);
+                    setTimeout(() => {
+                      setKnocked(false);
+                      setPinDone(true);
+                      setPinActive(false);
+                    }, 900);
+                  }}
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    pointerEvents: "none",
+                    zIndex: 20,
+                  }}
+                >
+                  <BowlingBall size={0.9} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
 
@@ -311,33 +420,44 @@ export function SkillsSection() {
           Each brick snaps in from a different direction — hover to feel the satisfying click.
         </motion.p>
 
-        {/* Wall panel */}
+        {/* Instruction booklet panel */}
         <div
-          className="p-8 rounded-2xl space-y-10"
+          className="rounded-2xl overflow-hidden"
           style={{
-            backgroundColor: "#E0D8C8",
-            border: "1px solid rgba(122,156,179,0.2)",
-            boxShadow: "inset 0 2px 0 rgba(255,255,255,0.04), 0 24px 80px rgba(0,0,0,0.5)",
+            backgroundColor: "#FDFCFA",
+            border: "1px solid rgba(173,117,86,0.2)",
+            boxShadow: "6px 6px 0 #DCCFB8, 0 24px 60px rgba(0,0,0,0.18)",
           }}
         >
-          {/* Wall top stud rail */}
+          {/* Booklet header */}
           <div
-            className="flex gap-2.5 pb-6 border-b"
-            style={{ borderColor: "rgba(122,156,179,0.12)" }}
+            className="px-8 py-4 flex items-center justify-between"
+            style={{ backgroundColor: "#AD7556" }}
           >
-            <BrickRow count={10} studs={2} color="#FDFCFA" size={15} className="opacity-50" />
+            <div className="flex items-center gap-3">
+              <BrickRow count={3} studs={1} color="#DCCFB8" size={18} className="opacity-70" />
+              <span className="text-xs font-black uppercase tracking-[0.25em]" style={{ color: "#FDFCFA" }}>
+                Building Instructions
+              </span>
+            </div>
+            <span className="text-xs font-black uppercase tracking-widest" style={{ color: "rgba(253,252,250,0.6)" }}>
+              {categories.length} Steps
+            </span>
           </div>
 
-          {categories.map((cat, i) => (
-            <SkillRow key={cat.label} cat={cat} rowIdx={i} />
-          ))}
+          {/* Steps */}
+          <div className="p-6 space-y-4">
+            {categories.map((cat, i) => (
+              <SkillRow key={cat.label} cat={cat} rowIdx={i} />
+            ))}
+          </div>
 
-          {/* Wall bottom stud rail */}
-          <div
-            className="flex gap-2.5 pt-6 border-t"
-            style={{ borderColor: "rgba(122,156,179,0.12)" }}
-          >
-            <BrickRow count={10} studs={2} color="#FDFCFA" size={15} className="opacity-50" />
+          {/* Booklet footer */}
+          <div className="px-8 py-3 flex items-center justify-between" style={{ backgroundColor: "#F5F3EC", borderTop: "1px solid rgba(173,117,86,0.12)" }}>
+            <BrickRow count={6} studs={2} color="#AD7556" size={13} className="opacity-20" />
+            <span className="text-xs font-black uppercase tracking-widest" style={{ color: "#AD7556", opacity: 0.5 }}>
+              Stack Complete ✓
+            </span>
           </div>
         </div>
       </div>

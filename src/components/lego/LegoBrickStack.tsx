@@ -34,16 +34,18 @@ function centeredLeft(studs: number) {
 
 interface LegoBrickStackProps {
   className?: string;
+  forceScatter?: boolean;
 }
 
-export function LegoBrickStack({ className }: LegoBrickStackProps) {
-  const [scattered, setScattered] = useState(false);
+export function LegoBrickStack({ className, forceScatter = false }: LegoBrickStackProps) {
+  const [hoverScattered, setHoverScattered] = useState(false);
+  const scattered = forceScatter || hoverScattered;
 
   return (
     <div
       className={className}
-      onMouseEnter={() => setScattered(true)}
-      onMouseLeave={() => setScattered(false)}
+      onMouseEnter={() => setHoverScattered(true)}
+      onMouseLeave={() => setHoverScattered(false)}
       style={{ position: "relative", width: CONTAINER_W, height: CONTAINER_H, cursor: "default" }}
     >
       {BRICKS.map((brick, i) => {

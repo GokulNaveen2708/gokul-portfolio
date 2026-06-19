@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "@/lib/data/projects";
 import { StudRow, Stud3D, BrickRow } from "@/components/lego/StudRow";
 import { FloatingMinifigs } from "@/components/lego/LegoMinifig";
 import { BackgroundBricks } from "@/components/lego/BackgroundBricks";
-import { LegoTrophy } from "@/components/lego/LegoTrophy";
+import { LegoTrophy }    from "@/components/lego/LegoTrophy";
+import { CatPawPrints } from "@/components/lego/CatPawPrints";
 
 /* Category color mapping */
 const catMap: Record<string, { color: string; label: string }> = {
@@ -55,6 +56,18 @@ function ProjectCard({
   const color = getCatColor(project.category);
   const setNum = `SET #${2401 + idx}`;
 
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const dx = (e.clientX - r.left) / r.width  - 0.5;
+    const dy = (e.clientY - r.top)  / r.height - 0.5;
+    setTilt({ x: -dy * 10, y: dx * 10 });
+  };
+
   return (
     <motion.button
       initial={{ opacity: 0, y: 36, scale: 0.95 }}
@@ -66,8 +79,16 @@ function ProjectCard({
       style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
     >
       <div
+        ref={cardRef}
+        onMouseMove={onMouseMove}
+        onMouseLeave={() => setTilt({ x: 0, y: 0 })}
         className="brick-card h-full flex flex-col group"
-        style={{ backgroundColor: "#FDFCFA" }}
+        style={{
+          backgroundColor: "#FDFCFA",
+          transform: `perspective(700px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transition: tilt.x === 0 ? "transform 0.4s ease" : "transform 0.08s ease",
+          willChange: "transform",
+        }}
       >
         {/* Stud header */}
         <div
@@ -107,15 +128,32 @@ function ProjectCard({
             {project.tags.slice(0, 4).map((t) => <TagChip key={t} tag={t} />)}
           </div>
 
-          {/* Click hint */}
+          {/* Footer row */}
           <div
-            className="flex items-center gap-2 text-xs font-black uppercase tracking-wider pt-4 border-t"
-            style={{ color: color, borderColor: "rgba(122,156,179,0.18)" }}
+            className="flex items-center justify-between pt-4 border-t"
+            style={{ borderColor: "rgba(122,156,179,0.18)" }}
           >
-            <span>View Details</span>
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m6 0l-3-3m3 3l-3 3" />
-            </svg>
+            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider" style={{ color }}>
+              <span>View Details</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m6 0l-3-3m3 3l-3 3" />
+              </svg>
+            </div>
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg transition-colors"
+                style={{ color, backgroundColor: color + "18", border: `1px solid ${color}40` }}
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.262.82-.583 0-.287-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.304.762-1.604-2.665-.305-5.466-1.334-5.466-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.526.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.29-1.552 3.296-1.23 3.296-1.23.655 1.65.243 2.873.12 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.804 5.625-5.476 5.921.43.372.814 1.103.814 2.222 0 1.604-.015 2.896-.015 3.289 0 .323.216.701.825.582C20.565 21.796 24 17.298 24 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                GitHub
+              </a>
+            )}
           </div>
         </div>
 
@@ -308,14 +346,6 @@ function ProjectModal({
                   </ul>
                 </ModalBlock>
 
-                {/* What I Learned */}
-                {project.whatILearned && (
-                  <ModalBlock color={color} label="What I Learned">
-                    <p className="text-sm font-semibold leading-relaxed" style={{ color: "#7A9CB3" }}>
-                      {project.whatILearned}
-                    </p>
-                  </ModalBlock>
-                )}
 
               </div>
 
@@ -351,6 +381,7 @@ export function ProjectsSection() {
       {/* Decorative large background bricks */}
       <BackgroundBricks section="projects" />
       <FloatingMinifigs section="projects" />
+      <CatPawPrints />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -361,12 +392,12 @@ export function ProjectsSection() {
           viewport={{ once: true }}
           className="flex items-center gap-3 mb-4"
         >
-          <BrickRow count={2} studs={2} color="#7A9CB3" size={22} />
+          <BrickRow count={2} studs={2} color="#7A9CB3" size={44} />
           <h2
-            className="text-xs font-black uppercase tracking-[0.3em]"
-            style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif", fontSize: "0.8rem" }}
+            className="text-4xl sm:text-5xl font-black uppercase tracking-[0.06em]"
+            style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif" }}
           >
-            The Build Gallery
+            Project Showcase
           </h2>
         </motion.div>
 

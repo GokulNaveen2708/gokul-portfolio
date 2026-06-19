@@ -152,21 +152,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </ul>
       </section>
 
-      {/* What I Learned */}
-      {project.whatILearned && (
-        <section className="mt-8">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-accent/80 mb-3 flex items-center gap-2">
-            <span className="h-px flex-1 bg-accent/10" />
-            What I Learned
-            <span className="h-px flex-1 bg-accent/10" />
-          </h2>
-          <div className="glass-card p-5 hover:translate-y-0">
-            <p className="text-sm text-fg-muted leading-relaxed">
-              {project.whatILearned}
-            </p>
-          </div>
-        </section>
-      )}
 
       {/* Mobile actions */}
       <div className="mt-8 flex flex-wrap gap-3 md:hidden">

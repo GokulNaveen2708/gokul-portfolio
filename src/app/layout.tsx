@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { ScrollBrickProgress } from "@/components/ui/ScrollBrickProgress";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={nunito.variable}>
       <body className="bg-[#F1EFE6] text-[#53443D] antialiased font-[family-name:var(--font-nunito)] overflow-x-hidden">
+        <ScrollBrickProgress />
         <SmoothScroll>
           <div className="relative min-h-screen flex flex-col">
             <SiteHeader />

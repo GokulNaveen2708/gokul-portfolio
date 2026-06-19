@@ -30,7 +30,7 @@ export function BrickRow({
   return (
     <div className={`flex gap-1 items-end ${className}`}>
       {Array.from({ length: count }).map((_, i) => (
-        <LegoBrickSVG key={i} color={color} studs={studs} isPlate scale={sc} />
+        <LegoBrickSVG key={i} color={color} studs={studs} scale={sc} />
       ))}
     </div>
   );

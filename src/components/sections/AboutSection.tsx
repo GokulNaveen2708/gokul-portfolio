@@ -5,12 +5,13 @@ import { motion } from "framer-motion";
 import { StudRow, BrickRow } from "@/components/lego/StudRow";
 import { FloatingMinifigs } from "@/components/lego/LegoMinifig";
 import { BackgroundBricks } from "@/components/lego/BackgroundBricks";
-import { LegoLaptop } from "@/components/lego/LegoLaptop";
+import { LegoLaptop }  from "@/components/lego/LegoLaptop";
+import { LegoCamera }  from "@/components/lego/LegoCamera";
+import { CatPawPrints } from "@/components/lego/CatPawPrints";
 
 const quickStats = [
-  { label: "MS @ RIT",        color: "#7A9CB3" },
-  { label: "2+ Yrs Exp",      color: "#53443D" },
-  { label: "Seattle, WA",     color: "#AD7556" },
+  { label: "MS @ RIT",    color: "#7A9CB3", textColor: "#FDFCFA" },
+  { label: "Seattle, WA", color: "#AD7556", textColor: "#FDFCFA" },
 ];
 
 export function AboutSection() {
@@ -22,6 +23,7 @@ export function AboutSection() {
       {/* Decorative large background bricks */}
       <BackgroundBricks section="about" />
       <FloatingMinifigs section="about" />
+      <CatPawPrints />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section label */}
@@ -33,10 +35,10 @@ export function AboutSection() {
           className="flex items-end gap-4 mb-16"
         >
           <div className="flex items-center gap-3">
-            <BrickRow count={2} studs={2} color="#AD7556" size={22} />
+            <BrickRow count={2} studs={2} color="#AD7556" size={44} />
             <h2
-              className="text-xs font-black uppercase tracking-[0.3em]"
-              style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif", fontSize: "0.8rem" }}
+              className="text-4xl sm:text-5xl font-black uppercase tracking-[0.06em]"
+              style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif" }}
             >
               About the Builder
             </h2>
@@ -60,12 +62,22 @@ export function AboutSection() {
             <div
               className="relative w-full max-w-xs"
               style={{
+                isolation: "isolate",
                 backgroundColor: "#AD7556",
                 borderRadius: 12,
                 padding: 4,
                 boxShadow: "6px 6px 0 #AD7556, 12px 12px 0 #AD7556, 0 20px 50px rgba(0,0,0,0.4)",
               }}
             >
+              {/* LEGO camera resting on top-right corner of the frame */}
+              <div style={{
+                position: "absolute", top: -22, right: -14, zIndex: 10,
+                opacity: 0.94, pointerEvents: "none",
+                transform: "rotate(-10deg)", transformOrigin: "bottom left",
+              }}>
+                <LegoCamera size={0.78} />
+              </div>
+
               {/* Top studs */}
               <div className="flex gap-2 px-3 pt-2 pb-1">
                 <BrickRow count={2} studs={2} color="#AD7556" size={22} />
@@ -80,7 +92,8 @@ export function AboutSection() {
                   src="/DisplayPicture.jpg"
                   alt="Gokul Naveen"
                   fill
-                  className="object-cover object-top"
+                  className="object-cover"
+                  style={{ objectPosition: "100% top" }}
                   sizes="(max-width: 768px) 80vw, 300px"
                 />
               </div>
@@ -104,15 +117,15 @@ export function AboutSection() {
             </div>
 
             {/* Quick stats */}
-            <div className="flex flex-wrap gap-2 justify-center max-w-xs">
+            <div className="flex flex-wrap gap-4 justify-center max-w-xs">
               {quickStats.map((s) => (
-                <span
+                <div
                   key={s.label}
-                  className="text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded"
-                  style={{ backgroundColor: s.color, color: "#53443D" }}
+                  className="brick-tag"
+                  style={{ backgroundColor: s.color, color: s.textColor }}
                 >
                   {s.label}
-                </span>
+                </div>
               ))}
             </div>
 
