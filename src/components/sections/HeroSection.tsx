@@ -269,26 +269,27 @@ export function HeroSection() {
               STATS PANEL
             </span>
           </div>
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-2 md:grid-cols-4">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6 + i * 0.1, type: "spring", stiffness: 200 }}
-                className="p-4 text-center"
+                className="p-3 md:p-4 text-center"
                 style={{
                   backgroundColor: "rgba(83,68,61,0.06)",
-                  borderRight: i < 3 ? "1px solid rgba(83,68,61,0.1)" : "none",
+                  borderRight: (i % 2 === 0) ? "1px solid rgba(83,68,61,0.1)" : "none",
+                  borderBottom: i < 2 ? "1px solid rgba(83,68,61,0.1)" : "none",
                 }}
               >
                 <div
-                  className="text-2xl md:text-3xl font-black"
+                  className="text-xl md:text-3xl font-black"
                   style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif" }}
                 >
                   <StatCounter end={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-xs font-bold mt-0.5" style={{ color: "#53443D" }}>
+                <div className="text-xs font-bold mt-0.5 leading-tight" style={{ color: "#53443D" }}>
                   {stat.label}
                 </div>
                 <div className="text-xs font-semibold" style={{ color: "#7A9CB3" }}>
@@ -345,21 +346,22 @@ export function HeroSection() {
           <MinecraftCreeper size={0.95} />
         </motion.div>
 
-        {/* Among Us crewmate — left-center */}
+        {/* Among Us crewmates — hidden on mobile, visible md+ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.25, type: "spring", stiffness: 130 }}
+          className="hidden md:block"
           style={{ position: "absolute", bottom: 0, left: "16%", zIndex: 3 }}
         >
           <AmongUsCrewmate size={0.88} color="#7A9CB3" />
         </motion.div>
 
-        {/* Second Among Us crewmate — different color */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4, type: "spring", stiffness: 130 }}
+          className="hidden md:block"
           style={{ position: "absolute", bottom: 0, left: "24%", zIndex: 3 }}
         >
           <AmongUsCrewmate size={0.72} color="#AD7556" />

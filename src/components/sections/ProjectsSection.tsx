@@ -143,7 +143,7 @@ function FeaturedBanner({
 
             {/* LEFT — box art panel */}
             <div
-              className="relative md:w-56 lg:w-64 flex-shrink-0 flex flex-col items-center justify-center p-6 gap-4"
+              className="relative md:w-56 lg:w-64 flex-shrink-0 flex flex-row md:flex-col items-center justify-center p-4 md:p-6 gap-4"
               style={{ backgroundColor: color + "18" }}
             >
               <StudPattern color={color} />
@@ -151,7 +151,7 @@ function FeaturedBanner({
               {/* Big impact stat */}
               <div className="relative text-center">
                 <div
-                  className="text-4xl lg:text-5xl font-black leading-none"
+                  className="text-3xl lg:text-5xl font-black leading-none"
                   style={{ color, fontFamily: "Fredoka One, sans-serif" }}
                 >
                   {feature.stat}
@@ -612,7 +612,8 @@ export function ProjectsSection() {
         <motion.div
           initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ delay: 0.15 }}
-          className="flex flex-wrap gap-3 mb-10 items-end"
+          className="flex gap-3 mb-10 items-end overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap"
+          style={{ scrollbarWidth: "none" }}
         >
           {categories.map(cat => {
             const info   = catMap[cat];
