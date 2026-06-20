@@ -41,8 +41,8 @@ function StatCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
 }
 
 /* ── Typewriter tagline ── */
-const TW_P1 = "Building intelligent distributed systems at scale — ";
-const TW_P2 = "one brick at a time.";
+const TW_P1 = "Turning Stack Overflow answers and AI prompts into systems that actually scale since 2021. ";
+const TW_P2 = "Running on coffee.";
 const TW_FULL = TW_P1 + TW_P2;
 
 function TypewriterTagline() {
@@ -122,21 +122,65 @@ export function HeroSection() {
       <BackgroundBricks section="hero" />
       <TetrisFallingBlocks />
 
-      {/* ── Top label ── */}
+      {/* ── LEGO sticker tag ── */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 flex items-center justify-center gap-4 pt-24 pb-2"
+        initial={{ opacity: 0, y: -24, rotate: -5 }}
+        animate={{ opacity: 1, y: 0, rotate: -2 }}
+        transition={{ type: "spring", stiffness: 180, damping: 16, delay: 0.15 }}
+        className="relative z-10 flex justify-center pt-24 pb-2"
       >
-        <BrickRow count={3} studs={1} color="#AD7556" size={16} className="opacity-70" />
-        <span
-          className="text-xs font-black uppercase tracking-[0.3em]"
-          style={{ color: "#AD7556", opacity: 0.8 }}
+        <div
+          className="inline-flex rounded-xl overflow-hidden"
+          style={{
+            boxShadow: "4px 4px 0 rgba(83,68,61,0.35), 7px 7px 0 rgba(83,68,61,0.12)",
+            border: "2px solid rgba(83,68,61,0.22)",
+            userSelect: "none",
+          }}
         >
-          Builder · Engineer · Creator
-        </span>
-        <BrickRow count={3} studs={1} color="#AD7556" size={16} className="opacity-70" />
+          {/* Left — stud panel */}
+          <div
+            className="flex flex-col items-center justify-center gap-2 px-3 py-3"
+            style={{ backgroundColor: "#AD7556" }}
+          >
+            {/* 2×2 stud grid */}
+            {[[0,1],[2,3]].map((row, ri) => (
+              <div key={ri} className="flex gap-2">
+                {row.map(i => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 11, height: 11, borderRadius: "50%",
+                      backgroundColor: "#FED8A6",
+                      boxShadow: "inset 0 -2px 0 rgba(83,68,61,0.35), 0 1px 0 rgba(255,255,255,0.25)",
+                    }}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Divider line — mimics sticker perforation */}
+          <div style={{ width: 1.5, backgroundColor: "rgba(83,68,61,0.15)" }} />
+
+          {/* Right — text panel */}
+          <div
+            className="flex flex-col justify-center px-4 py-2.5"
+            style={{ backgroundColor: "#FDFCFA" }}
+          >
+            <div
+              className="text-sm font-black uppercase tracking-[0.22em] leading-tight"
+              style={{ color: "#53443D", fontFamily: "Fredoka One, sans-serif" }}
+            >
+              Software Engineer
+            </div>
+            <div
+              className="text-xs font-bold tracking-wider mt-0.5"
+              style={{ color: "#AD7556", opacity: 0.85 }}
+            >
+              Distributed Systems · AI Engineering
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       {/* ── Main content ── */}
