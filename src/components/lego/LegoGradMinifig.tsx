@@ -30,21 +30,21 @@ export function LegoGradMinifig({ size = 1 }: { size?: number }) {
             <ellipse cx={47} cy={192} rx={30} ry={5} fill="rgba(0,0,0,0.13)" />
 
             {/* ══════════ GRADUATION CAP ══════════ */}
-            {/* Cap dome/band beneath board */}
-            <rect x={30} y={6} width={34} height={18} rx={7} fill="#141414" />
-            <rect x={30} y={6} width={34} height={7} rx={6} fill="#1C1C1C" />
-            <ellipse cx={47} cy={24} rx={14} ry={4} fill="#0A0A0A" />
-            {/* Board — wide flat piece */}
-            <polygon points="4,30 90,30 85,19 9,19" fill="#1C1C1C" />
-            <polygon points="90,30 90,40 85,30 85,19" fill="#080808" />
-            <rect x={4} y={30} width={86} height={10} rx={2} fill="#111111" />
-            <rect x={4} y={30} width={86} height={1.5} fill="rgba(255,255,255,0.06)" />
-            {/* Center button */}
-            <circle cx={47} cy={23} r={4} fill="#AD7556" />
-            <circle cx={47} cy={23} r={2.5} fill="#C4895E" />
-            <ellipse cx={46} cy={22} rx={1.2} ry={0.8} fill="rgba(255,255,255,0.4)" />
-            {/* Cord from button → right corner */}
-            <path d="M 47 23 Q 72 19 85 20" fill="none" stroke="#AD7556" strokeWidth={1.6} strokeLinecap="round" />
+            {/* Board — flat mortarboard ON TOP */}
+            <polygon points="4,16 90,16 85,6 9,6" fill="#1C1C1C" />
+            <polygon points="90,16 90,26 85,16 85,6" fill="#080808" />
+            <rect x={4} y={16} width={86} height={10} rx={2} fill="#111111" />
+            <rect x={4} y={16} width={86} height={1.5} fill="rgba(255,255,255,0.06)" />
+            {/* Center button on board */}
+            <circle cx={47} cy={11} r={4} fill="#AD7556" />
+            <circle cx={47} cy={11} r={2.5} fill="#C4895E" />
+            <ellipse cx={46} cy={10} rx={1.2} ry={0.8} fill="rgba(255,255,255,0.4)" />
+            {/* Cord from button → right corner of board */}
+            <path d="M 47 11 Q 72 7 85 7" fill="none" stroke="#AD7556" strokeWidth={1.6} strokeLinecap="round" />
+            {/* Cap dome/skull BELOW the board, sitting on the head */}
+            <rect x={30} y={22} width={34} height={18} rx={7} fill="#141414" />
+            <rect x={30} y={22} width={34} height={7} rx={6} fill="#1C1C1C" />
+            <ellipse cx={47} cy={40} rx={14} ry={4} fill="#0A0A0A" />
 
             {/* ══════════ HEAD ══════════ */}
             {/* Neck stud (LEGO cylindrical neck) */}
@@ -111,7 +111,7 @@ export function LegoGradMinifig({ size = 1 }: { size?: number }) {
             transition={{ delay: 0.8 }}
             style={{
               position: "absolute",
-              top: 19 * size,
+              top: 5 * size,
               left: 83 * size,
               transformOrigin: "top center",
             }}

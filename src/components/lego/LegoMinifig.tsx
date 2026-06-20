@@ -803,3 +803,136 @@ export function MinifigWaveGroup() {
     </div>
   );
 }
+
+// ── Hero builder minifig: walks in from left, greets, then idles ──
+export function HeroBuilderMinifig({ scale = 1.3 }: { scale?: number }) {
+  const [ePhase, setEPhase] = useState<"pre" | "walking" | "arrived" | "idle">("pre");
+  const [showBubble, setShowBubble] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [exploded, setExploded] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setEPhase("walking"), 400);
+    const t2 = setTimeout(() => { setEPhase("arrived"); setShowBubble(true); }, 1800);
+    const t3 = setTimeout(() => setShowBubble(false), 6200);
+    const t4 = setTimeout(() => setEPhase("idle"), 6600);
+    return () => { [t1, t2, t3, t4].forEach(clearTimeout); };
+  }, []);
+
+  const cfg = configs["builder"];
+  const figWidthPx = 75 * scale;
+  const isEntering = ePhase === "walking";
+  const isWaving   = ePhase === "arrived";
+
+  return (
+    <motion.div
+      style={{ position: "relative", width: figWidthPx, height: figWidthPx * 1.7, cursor: "pointer" }}
+      initial={{ x: 300, opacity: 0 }}
+      animate={{
+        x:       ePhase === "pre" ? 300 : 0,
+        opacity: ePhase === "pre" ? 0 : 1,
+        scale:   hovered ? 1.08 : 1,
+      }}
+      transition={isEntering
+        ? { x: { duration: 1.3, ease: "easeOut" }, opacity: { duration: 0.15 } }
+        : { type: "spring", stiffness: 360, damping: 24 }
+      }
+      onMouseEnter={() => { setHovered(true); setExploded(true); }}
+      onMouseLeave={() => { setHovered(false); setExploded(false); }}
+    >
+      <AnimatePresence>
+        {showBubble && (
+          <motion.div
+            key="welcome-bubble"
+            initial={{ opacity: 0, x: -10, scale: 0.78 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -8, scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 420, damping: 26 }}
+            style={{
+              position: "absolute",
+              bottom: "calc(100% + 14px)",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "#7A9CB3",
+              color: "#FDFCFA",
+              padding: "7px 14px",
+              borderRadius: 10,
+              whiteSpace: "nowrap",
+              fontSize: 12,
+              fontWeight: 800,
+              fontFamily: "Nunito, sans-serif",
+              letterSpacing: "0.02em",
+              boxShadow: "0 4px 18px rgba(0,0,0,0.28), 3px 3px 0 rgba(83,68,61,0.18)",
+              zIndex: 22,
+              pointerEvents: "none",
+            }}
+          >
+            Hey, welcome! 👷 Let&apos;s build something great.
+            <div style={{
+              position: "absolute", top: "100%", left: "50%",
+              transform: "translateX(-50%)", width: 0, height: 0,
+              borderLeft: "7px solid transparent", borderRight: "7px solid transparent",
+              borderTop: "10px solid #7A9CB3",
+            }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {hovered && ePhase === "idle" && (
+          <motion.div
+            key="quip"
+            initial={{ opacity: 0, y: 8, scale: 0.82 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.88 }}
+            transition={{ type: "spring", stiffness: 440, damping: 28 }}
+            style={{
+              position: "absolute",
+              bottom: "calc(100% + 10px)",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "#53443D",
+              color: "#F1EFE6",
+              padding: "5px 10px",
+              borderRadius: 8,
+              whiteSpace: "nowrap",
+              fontSize: 11,
+              fontWeight: 800,
+              fontFamily: "Nunito, sans-serif",
+              zIndex: 20,
+              pointerEvents: "none",
+              boxShadow: "0 4px 14px rgba(0,0,0,0.45)",
+            }}
+          >
+            Building brick by brick! 🧱
+            <div style={{
+              position: "absolute", top: "100%", left: "50%",
+              transform: "translateX(-50%)", width: 0, height: 0,
+              borderLeft: "7px solid transparent", borderRight: "7px solid transparent",
+              borderTop: "7px solid #53443D",
+            }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.div
+        animate={isWaving ? { y: [0, -24, 0, -16, 0, -9, 0, -4, 0] } : { y: 0 }}
+        transition={{ duration: 1.8, ease: "easeOut" }}
+        style={{ transformOrigin: "center bottom" }}
+      >
+        <motion.div
+          animate={{ scaleX: isEntering ? -1 : 1 }}
+          transition={{ duration: 0.28 }}
+          style={{ transformOrigin: "center bottom" }}
+        >
+          <div style={{ transform: `scale(${scale})`, transformOrigin: "bottom left" }}>
+            <CSSLegoFig
+              cfg={cfg}
+              walking={isEntering}
+              hovered={ePhase === "idle" && hovered}
+              exploded={exploded && ePhase === "idle"}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+}

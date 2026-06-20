@@ -4,10 +4,8 @@ export function SiteFooter() {
   return (
     <footer style={{ backgroundColor: "#E0D8C8", borderTop: "1px solid rgba(122,156,179,0.15)" }}>
       {/* Stud rail */}
-      <div className="px-4 py-1.5 overflow-hidden" style={{ backgroundColor: "#F5F3EC" }}>
-        <div className="max-w-7xl mx-auto">
-          <BrickRow count={14} studs={2} color="#FDFCFA" size={18} className="opacity-50" />
-        </div>
+      <div className="py-1.5 overflow-hidden" style={{ backgroundColor: "#F5F3EC" }}>
+        <BrickRow count={200} studs={2} color="#FDFCFA" size={18} className="opacity-50" />
       </div>
 
       <div className="max-w-7xl mx-auto flex flex-col gap-3 px-4 py-6 sm:px-6 lg:px-8 sm:flex-row sm:items-center sm:justify-between">
@@ -38,10 +36,8 @@ export function SiteFooter() {
       </div>
 
       {/* Bottom stud rail */}
-      <div className="px-4 py-1 overflow-hidden" style={{ backgroundColor: "#FDFCFA" }}>
-        <div className="max-w-7xl mx-auto">
-          <BrickRow count={14} studs={2} color="#F5F3EC" size={18} className="opacity-60" />
-        </div>
+      <div className="py-1 overflow-hidden" style={{ backgroundColor: "#FDFCFA" }}>
+        <BrickRow count={200} studs={2} color="#F5F3EC" size={18} className="opacity-60" />
       </div>
     </footer>
   );

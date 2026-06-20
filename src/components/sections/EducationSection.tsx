@@ -33,19 +33,19 @@ const schools: School[] = [
     stars: 5,
     coursework: [
       "Distributed Systems",
-      "Machine Learning",
+      "Machine Learning Systems",
+      "Scalable Software Design",
       "Big Data Analytics",
-      "Advanced Database Systems",
       "Natural Language Processing",
-      "Computer Vision",
+      "AI Engineering & MLOps",
     ],
     projects: [
       "Trust-Aware Federated Learning Framework",
-      "KaggleScope: Large-Scale Data Analytics",
+      "Distributed ML Pipeline with KaggleScope",
       "TextMark: LLM Watermarking System",
       "Text Classification with UDA + BERT",
     ],
-    note: "Graduate focus on distributed ML and scalable system design",
+    note: "Distributed ML infrastructure, scalable system design, and AI-powered software engineering",
   },
   {
     name: "SASTRA University",
@@ -286,13 +286,13 @@ export function EducationSection() {
             className="hidden lg:block"
             style={{
               position: "absolute",
-              top: -60,
-              right: -20,
+              top: -90,
+              left: -60,
               zIndex: 10,
               pointerEvents: "none",
             }}
           >
-            <LegoGradMinifig size={0.95} />
+            <LegoGradMinifig size={0.8} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -32,10 +32,10 @@ export function SiteHeader() {
       >
         {/* Brick rail across very top */}
         <div
-          className="w-full px-4 py-1.5 flex gap-1 overflow-hidden"
+          className="w-full py-1.5 flex gap-1 overflow-hidden"
           style={{ backgroundColor: "#FDFCFA" }}
         >
-          <BrickRow count={22} studs={2} color="#7A9CB3" size={22} className="opacity-50" />
+          <BrickRow count={200} studs={2} color="#7A9CB3" size={22} className="opacity-50" />
         </div>
 
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">

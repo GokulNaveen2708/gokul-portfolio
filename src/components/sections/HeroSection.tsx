@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { BrickRow } from "@/components/lego/StudRow";
 import { BrickButton } from "@/components/lego/BrickButton";
-import { FloatingMinifigs } from "@/components/lego/LegoMinifig";
 import { BackgroundBricks } from "@/components/lego/BackgroundBricks";
-import { LegoSittingCat }   from "@/components/lego/LegoSittingCat";
-import { LegoPizzaSlice }   from "@/components/lego/LegoPizzaSlice";
-import { LegoVinylRecord }  from "@/components/lego/LegoVinylRecord";
-import { CatPawPrints }      from "@/components/lego/CatPawPrints";
+import { TetrisFallingBlocks } from "@/components/lego/TetrisFallingBlocks";
+import { HeroBuilderMinifig } from "@/components/lego/LegoMinifig";
+import { PacManGhost } from "@/components/lego/PacManGhost";
+import { PixelRobot } from "@/components/lego/PixelRobot";
+import { AmongUsCrewmate } from "@/components/lego/AmongUsCrewmate";
+import { ChromeDinoGame } from "@/components/lego/ChromeDino";
 import { MinecraftCreeper } from "@/components/lego/MinecraftCreeper";
 
 /* ── Animated stat counter ── */
@@ -119,31 +120,9 @@ export function HeroSection() {
     >
       {/* ── Background layers ── */}
       <BackgroundBricks section="hero" />
-      <FloatingMinifigs section="hero" zIndex={12} />
+      <TetrisFallingBlocks />
 
-      {/* ── Cat paw prints ── */}
-      <CatPawPrints />
-
-      {/* ── Pizza slice — upper right, tip pointing diagonally toward name ── */}
-      <div style={{
-        position: "absolute", top: "18%", right: "3%", zIndex: 4, opacity: 0.84,
-        transform: "rotate(205deg)", transformOrigin: "center center",
-      }}>
-        <LegoPizzaSlice size={0.92} />
-      </div>
-
-      {/* ── Vinyl gramophone — left side, between CTA and stats panel ── */}
-      <div style={{ position: "absolute", bottom: "14%", left: "10%", zIndex: 6, opacity: 0.86 }}>
-        <LegoVinylRecord size={1.25} />
-      </div>
-
-      {/* ── Minecraft Creeper — top-left ── */}
-      <div style={{ position: "absolute", left: "4%", bottom: "65%", zIndex: 6, opacity: 0.90 }}>
-        <MinecraftCreeper size={1.3} />
-      </div>
-
-
-      {/* ── Top bar: issue label (like a magazine masthead) ── */}
+      {/* ── Top label ── */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -160,24 +139,58 @@ export function HeroSection() {
         <BrickRow count={3} studs={1} color="#AD7556" size={16} className="opacity-70" />
       </motion.div>
 
-      {/* ── Giant name — the focal point ── */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 text-center">
-        <h1
-          style={{
-            fontFamily: "Fredoka One, sans-serif",
-            fontSize: "clamp(4.8rem, 13vw, 14.5rem)",
-            lineHeight: 0.88,
-            letterSpacing: "-0.02em",
-            userSelect: "none",
-          }}
-        >
-          <span className="block">
-            <BrickLetters text="GOKUL" color="#53443D" />
-          </span>
-          <span className="block">
-            <BrickLetters text="NAVEEN" color="#AD7556" />
-          </span>
-        </h1>
+      {/* ── Main content ── */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 text-center pb-4">
+
+        {/* Name + minifig + ghost row */}
+        <div className="relative flex items-end justify-center">
+
+          {/* Pac-Man ghost — floats to the LEFT of the name */}
+          <div
+            className="hidden lg:block"
+            style={{
+              position: "absolute",
+              right: "100%",
+              top: "15%",
+              marginRight: 20,
+              pointerEvents: "none",
+            }}
+          >
+            <PacManGhost size={1.0} color="#AD7556" />
+          </div>
+
+          {/* Name */}
+          <h1
+            style={{
+              fontFamily: "Fredoka One, sans-serif",
+              fontSize: "clamp(3.6rem, 9.5vw, 10rem)",
+              lineHeight: 0.88,
+              letterSpacing: "-0.02em",
+              userSelect: "none",
+            }}
+          >
+            <span className="block">
+              <BrickLetters text="GOKUL" color="#53443D" />
+            </span>
+            <span className="block">
+              <BrickLetters text="NAVEEN" color="#AD7556" />
+            </span>
+          </h1>
+
+          {/* Builder minifig — walks in from right, sits beside the name */}
+          <div
+            className="hidden lg:block"
+            style={{
+              position: "absolute",
+              left: "100%",
+              bottom: 0,
+              marginLeft: 4,
+              pointerEvents: "auto",
+            }}
+          >
+            <HeroBuilderMinifig scale={1.55} />
+          </div>
+        </div>
 
         {/* Tagline */}
         <motion.p
@@ -189,14 +202,18 @@ export function HeroSection() {
           <TypewriterTagline />
         </motion.p>
 
-        {/* CTAs */}
+        {/* CTAs + pixel robot inline */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.95, duration: 0.5 }}
-          className="mt-6 flex flex-wrap gap-4 justify-center items-end"
+          className="mt-6 flex flex-wrap gap-4 justify-center items-center"
         >
-          <BrickButton variant="primary" href="https://drive.google.com/file/d/1h7hNSM6NLBxgMkwX84H0bmHAyO6L59V7/view?usp=sharing" id="hero-resume-btn">
+          <BrickButton
+            variant="primary"
+            href="https://drive.google.com/file/d/1h7hNSM6NLBxgMkwX84H0bmHAyO6L59V7/view?usp=sharing"
+            id="hero-resume-btn"
+          >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -212,9 +229,13 @@ export function HeroSection() {
             </svg>
             Get in Contact
           </BrickButton>
+          {/* Pixel robot — right of contact button */}
+          <div className="hidden sm:block" style={{ pointerEvents: "none" }}>
+            <PixelRobot size={0.62} />
+          </div>
         </motion.div>
 
-        {/* Open to work badge */}
+        {/* Open to work */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -229,49 +250,25 @@ export function HeroSection() {
             Open to opportunities
           </span>
         </motion.div>
-      </div>
 
-      {/* ── Stats strip — compact horizontal bar at bottom ── */}
-      <div className="relative z-10 mx-4 sm:mx-8 lg:mx-auto lg:max-w-4xl mb-10">
-
-        {/* Cat peeking from the right side — body hidden behind panel, head visible above */}
-        <div style={{
-          position: "absolute",
-          top: -44,
-          right: "6%",
-          zIndex: 1,
-          pointerEvents: "none",
-        }}>
-          <LegoSittingCat size={0.75} />
-        </div>
-
+        {/* Stats panel */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
-          className="relative rounded-xl overflow-hidden"
+          className="mt-8 w-full max-w-2xl mx-auto rounded-xl overflow-hidden"
           style={{
-            zIndex: 2,
             backgroundColor: "#DCCFB8",
             boxShadow: "5px 5px 0 #AD7556, 10px 10px 0 rgba(83,68,61,0.2)",
             border: "1px solid rgba(83,68,61,0.18)",
           }}
         >
-          {/* Header strip */}
-          <div
-            className="px-5 py-2 flex items-center gap-2"
-            style={{ backgroundColor: "#AD7556" }}
-          >
+          <div className="px-5 py-2 flex items-center gap-2" style={{ backgroundColor: "#AD7556" }}>
             <BrickRow count={4} studs={2} color="#DCCFB8" size={20} />
-            <span
-              className="ml-auto text-xs font-black uppercase tracking-widest"
-              style={{ color: "#FDFCFA", opacity: 0.88 }}
-            >
+            <span className="ml-auto text-xs font-black uppercase tracking-widest" style={{ color: "#FDFCFA", opacity: 0.88 }}>
               STATS PANEL
             </span>
           </div>
-
-          {/* Stats grid */}
           <div className="grid grid-cols-4">
             {stats.map((stat, i) => (
               <motion.div
@@ -300,32 +297,77 @@ export function HeroSection() {
               </motion.div>
             ))}
           </div>
-
-          {/* Footer strip */}
           <div className="px-5 py-2" style={{ backgroundColor: "#AD7556" }}>
             <BrickRow count={4} studs={2} color="#DCCFB8" size={20} />
           </div>
         </motion.div>
       </div>
 
-      {/* ── Scroll hint ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
-      >
-        <span className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: "#AD7556", opacity: 0.55 }}>
-          keep scrolling
-        </span>
-        <motion.div
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          style={{ color: "#AD7556", opacity: 0.55, fontSize: "1.1rem" }}
+      {/* ══════════ FLOOR STRIP ══════════ */}
+      <div className="relative w-full flex-shrink-0" style={{ height: 130, zIndex: 10 }}>
+
+        {/* Stud strip — top edge */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 26,
+            backgroundColor: "#AD7556",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+          }}
         >
-          ↓
+          <BrickRow count={200} studs={2} color="#FED8A6" size={26} />
+        </div>
+
+        {/* Floor body */}
+        <div
+          style={{
+            position: "absolute",
+            top: 26,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "#53443D",
+          }}
+        />
+
+        {/* Minecraft Creeper — left, peeking above the stud strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, type: "spring", stiffness: 130 }}
+          style={{ position: "absolute", bottom: 0, left: "5%", zIndex: 3 }}
+        >
+          <MinecraftCreeper size={0.95} />
         </motion.div>
-      </motion.div>
+
+        {/* Among Us crewmate — left-center */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.25, type: "spring", stiffness: 130 }}
+          style={{ position: "absolute", bottom: 0, left: "16%", zIndex: 3 }}
+        >
+          <AmongUsCrewmate size={0.88} color="#7A9CB3" />
+        </motion.div>
+
+        {/* Second Among Us crewmate — different color */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4, type: "spring", stiffness: 130 }}
+          style={{ position: "absolute", bottom: 0, left: "24%", zIndex: 3 }}
+        >
+          <AmongUsCrewmate size={0.72} color="#AD7556" />
+        </motion.div>
+
+        {/* Chrome Dino mini-game — auto-jumps over the cactus */}
+        <ChromeDinoGame />
+      </div>
     </section>
   );
 }
