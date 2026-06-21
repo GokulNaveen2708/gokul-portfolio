@@ -213,11 +213,24 @@ export function HeroSection() {
               userSelect: "none",
             }}
           >
-            <span className="block">
+            <span className="block" style={{ display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
               <BrickLetters text="GOKUL" color="#53443D" />
+              <motion.span
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.42, type: "spring", stiffness: 240, damping: 18 }}
+                style={{
+                  fontFamily: "Fredoka One, sans-serif",
+                  fontSize: "0.38em",
+                  color: "#AD7556",
+                  opacity: 0.7,
+                  marginTop: "0.12em",
+                  letterSpacing: "0.02em",
+                }}
+              >(A)</motion.span>
             </span>
             <span className="block">
-              <BrickLetters text="NAVEEN" color="#AD7556" />
+              <BrickLetters text="CHAPALA" color="#AD7556" />
             </span>
           </h1>
 
