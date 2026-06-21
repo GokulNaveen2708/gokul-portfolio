@@ -936,3 +936,74 @@ export function HeroBuilderMinifig({ scale = 1.3 }: { scale?: number }) {
     </motion.div>
   );
 }
+
+// ── Clickable contact-link minifig ──
+export function ContactLinkMinifig({
+  type,
+  href,
+  message,
+  scale = 1,
+}: {
+  type: MinifigType;
+  href: string;
+  message: string;
+  scale?: number;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const cfg = configs[type];
+
+  return (
+    <a
+      href={href}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", textDecoration: "none", position: "relative", cursor: "pointer" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div style={{ height: 40, position: "relative", width: "100%", display: "flex", justifyContent: "center" }}>
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              key="bubble"
+              initial={{ opacity: 0, y: 8, scale: 0.82 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ type: "spring", stiffness: 440, damping: 28 }}
+              style={{
+                position: "absolute",
+                bottom: 4,
+                backgroundColor: "#53443D",
+                color: "#F1EFE6",
+                padding: "5px 10px",
+                borderRadius: 8,
+                whiteSpace: "nowrap",
+                fontSize: 11,
+                fontWeight: 800,
+                fontFamily: "Nunito, sans-serif",
+                pointerEvents: "none",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
+                zIndex: 20,
+              }}
+            >
+              {message}
+              <div style={{
+                position: "absolute", top: "100%", left: "50%",
+                transform: "translateX(-50%)", width: 0, height: 0,
+                borderLeft: "5px solid transparent", borderRight: "5px solid transparent",
+                borderTop: "6px solid #53443D",
+              }} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <motion.div
+        animate={hovered ? { y: -8 } : { y: 0 }}
+        transition={{ type: "spring", stiffness: 320, damping: 18 }}
+        style={{ transform: `scale(${scale})`, transformOrigin: "bottom center" }}
+      >
+        <CSSLegoFig cfg={cfg} walking={false} hovered={hovered} exploded={false} />
+      </motion.div>
+    </a>
+  );
+}

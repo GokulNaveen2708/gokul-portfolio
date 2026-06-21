@@ -73,7 +73,7 @@ export const projects: Project[] = [
   },
   {
     slug: "meta-kaggle-insights",
-    title: "KaggleScope: Large-Scale Data Engineering",
+    title: "Kaggle Competition Metadata Analytics",
     subtitle: "Big Data • Relational Modeling • NoSQL • ETL • Itemset Mining",
     category: "Data Engineering",
     tags: ["SQL", "ETL", "Data Modeling", "NoSQL", "Association Mining", "Pandas", "Python"],

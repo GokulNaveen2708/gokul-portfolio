@@ -133,10 +133,10 @@ function DegreeCard({ school, index }: { school: School; index: number }) {
       <div style={{ backgroundColor: school.headerColor, padding: "14px 20px 10px" }}>
         <BrickRow count={4} studs={2} color="rgba(253,252,250,0.25)" size={16} />
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color: "rgba(253,252,250,0.6)" }}>
+          <span style={{ fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color: "rgba(253,252,250,0.6)" }}>
             {school.tag}
           </span>
-          <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(253,252,250,0.45)" }}>
+          <span style={{ fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(253,252,250,0.45)" }}>
             {school.years}
           </span>
         </div>
@@ -151,14 +151,14 @@ function DegreeCard({ school, index }: { school: School; index: number }) {
         <h3 style={{
           fontFamily: "Fredoka One, sans-serif",
           color: "#53443D",
-          fontSize: "1.1rem",
+          fontSize: "1.25rem",
           lineHeight: 1.2,
           margin: 0,
         }}>
           {school.name}
         </h3>
         <div style={{ marginTop: 5 }}>
-          <span style={{ fontSize: 13, fontWeight: 900, color: school.accentColor }}>
+          <span style={{ fontSize: 15, fontWeight: 900, color: school.accentColor }}>
             {school.degree}
           </span>
         </div>
@@ -171,14 +171,14 @@ function DegreeCard({ school, index }: { school: School; index: number }) {
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: school.accentColor, boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.25)" }} />
-            <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color: school.accentColor }}>
+            <span style={{ fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color: school.accentColor }}>
               Coursework
             </span>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {school.coursework.map((c) => (
               <span key={c} style={{
-                fontSize: 11, fontWeight: 700, padding: "4px 9px", borderRadius: 5,
+                fontSize: 12, fontWeight: 700, padding: "5px 10px", borderRadius: 5,
                 backgroundColor: school.accentColor + "18", color: "#53443D",
                 border: `1px solid ${school.accentColor}30`,
               }}>
@@ -193,15 +193,15 @@ function DegreeCard({ school, index }: { school: School; index: number }) {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: school.accentColor, boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.25)" }} />
-              <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color: school.accentColor }}>
+              <span style={{ fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color: school.accentColor }}>
                 Build Projects
               </span>
             </div>
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 5 }}>
               {school.projects.map((p) => (
                 <li key={p} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
-                  <span style={{ color: school.accentColor, fontSize: 11, lineHeight: 1.6, flexShrink: 0 }}>▸</span>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: "#7A9CB3", lineHeight: 1.45 }}>{p}</span>
+                  <span style={{ color: school.accentColor, fontSize: 13, lineHeight: 1.6, flexShrink: 0 }}>▸</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#7A9CB3", lineHeight: 1.45 }}>{p}</span>
                 </li>
               ))}
             </ul>
@@ -212,7 +212,7 @@ function DegreeCard({ school, index }: { school: School; index: number }) {
         <div style={{
           marginTop: "auto", padding: "8px 11px", borderRadius: 7,
           backgroundColor: school.accentColor + "0E", border: `1px solid ${school.accentColor}22`,
-          fontSize: 11, fontStyle: "italic", fontWeight: 600, color: "#7A9CB3", lineHeight: 1.5,
+          fontSize: 13, fontStyle: "italic", fontWeight: 600, color: "#7A9CB3", lineHeight: 1.5,
         }}>
           {school.note}
         </div>
@@ -223,12 +223,12 @@ function DegreeCard({ school, index }: { school: School; index: number }) {
         backgroundColor: "#F1EFE6", borderTop: `1px solid ${school.accentColor}22`,
         padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
-        <span style={{ fontSize: 11, fontWeight: 900, color: "#53443D" }}>
+        <span style={{ fontSize: 13, fontWeight: 900, color: "#53443D" }}>
           {school.coursework.length} Courses
           {school.projects.length > 0 && ` · ${school.projects.length} Projects`}
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#7A9CB3" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#7A9CB3" }}>
             Level
           </span>
           <StarRating value={school.stars} color={school.accentColor} />

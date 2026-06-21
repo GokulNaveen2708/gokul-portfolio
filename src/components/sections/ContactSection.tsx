@@ -2,11 +2,18 @@
 
 import { motion } from "framer-motion";
 import { BrickRow } from "@/components/lego/StudRow";
-import { MinifigWaveGroup, FloatingMinifigs } from "@/components/lego/LegoMinifig";
+import { FloatingMinifigs, ContactLinkMinifig } from "@/components/lego/LegoMinifig";
 import { BackgroundBricks } from "@/components/lego/BackgroundBricks";
 import { LegoCoffeeMug }   from "@/components/lego/LegoCoffeeMug";
 import { LegoPostbox }     from "@/components/lego/LegoPostbox";
 import { CatPawPrints }    from "@/components/lego/CatPawPrints";
+
+const CONTACT_MINIFIGS: Record<string, { type: Parameters<typeof ContactLinkMinifig>[0]["type"]; message: string }> = {
+  email:    { type: "waver",     message: "Ping me anytime! 📧" },
+  linkedin: { type: "dev",       message: "Let's network! 💼" },
+  github:   { type: "ninja",     message: "Star my repos! ⭐" },
+  resume:   { type: "graduate",  message: "I'm caffeinated & ready ☕" },
+};
 
 const contactLinks = [
   {
@@ -52,7 +59,7 @@ const contactLinks = [
   {
     id: "resume",
     label: "Resume",
-    value: "PDF · Updated 2025",
+    value: "",
     href: "https://drive.google.com/file/d/1h7hNSM6NLBxgMkwX84H0bmHAyO6L59V7/view?usp=sharing",
     color: "#7A9CB3",
     shadow: "#4E7A8F",
@@ -92,8 +99,7 @@ function LogoBrickButton({ link, index }: { link: typeof contactLinks[0]; index:
         textDecoration: "none",
         position: "relative",
         cursor: "pointer",
-        flex: 1,
-        minWidth: 110,
+        width: "100%",
         /* 3D brick shadow */
         boxShadow: `5px 0 0 ${link.shadow}, 0 7px 0 ${link.shadow}, 5px 7px 0 rgba(0,0,0,0.35), 0 16px 32px rgba(0,0,0,0.22)`,
       }}
@@ -146,13 +152,15 @@ function LogoBrickButton({ link, index }: { link: typeof contactLinks[0]; index:
         }}>
           {link.label}
         </div>
-        <div style={{
-          fontSize: 10, fontWeight: 600,
-          color: "rgba(253,252,250,0.60)",
-          letterSpacing: "0.04em",
-        }}>
-          {link.value}
-        </div>
+        {link.value && (
+          <div style={{
+            fontSize: 10, fontWeight: 600,
+            color: "rgba(253,252,250,0.60)",
+            letterSpacing: "0.04em",
+          }}>
+            {link.value}
+          </div>
+        )}
       </div>
     </motion.a>
   );
@@ -234,29 +242,30 @@ export function ContactSection() {
           Pick your preferred channel below.
         </motion.p>
 
-        {/* Logo icon buttons */}
+        {/* Logo icon buttons + minifig mascots */}
         <div className="flex flex-wrap gap-5 mb-20">
-          {contactLinks.map((link, i) => (
-            <LogoBrickButton key={link.id} link={link} index={i} />
-          ))}
+          {contactLinks.map((link, i) => {
+            const fig = CONTACT_MINIFIGS[link.id];
+            return (
+              <div key={link.id} className="flex flex-col items-center gap-3 flex-1" style={{ minWidth: 110 }}>
+                <LogoBrickButton link={link} index={i} />
+                <ContactLinkMinifig
+                  type={fig.type}
+                  href={link.href}
+                  message={fig.message}
+                  scale={0.85}
+                />
+              </div>
+            );
+          })}
         </div>
 
-        {/* Waving minifig group */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="flex flex-col items-center gap-5"
+        <div
+          className="px-6 py-2 rounded-full text-xs font-black uppercase tracking-[0.2em] w-fit mx-auto"
+          style={{ backgroundColor: "#FDFCFA", color: "#AD7556", border: "1px solid rgba(83,68,61,0.2)" }}
         >
-          <MinifigWaveGroup />
-          <div
-            className="px-6 py-2 rounded-full text-xs font-black uppercase tracking-[0.2em]"
-            style={{ backgroundColor: "#FDFCFA", color: "#AD7556", border: "1px solid rgba(83,68,61,0.2)" }}
-          >
-            🧱 Built Brick by Brick — Thanks for visiting!
-          </div>
-        </motion.div>
+          🧱 Built Brick by Brick — Thanks for visiting!
+        </div>
 
       </div>
     </section>
