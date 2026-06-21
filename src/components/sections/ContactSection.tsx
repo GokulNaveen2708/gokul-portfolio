@@ -152,15 +152,14 @@ function LogoBrickButton({ link, index }: { link: typeof contactLinks[0]; index:
         }}>
           {link.label}
         </div>
-        {link.value && (
-          <div style={{
-            fontSize: 10, fontWeight: 600,
-            color: "rgba(253,252,250,0.60)",
-            letterSpacing: "0.04em",
-          }}>
-            {link.value}
-          </div>
-        )}
+        <div style={{
+          fontSize: 10, fontWeight: 600,
+          color: "rgba(253,252,250,0.60)",
+          letterSpacing: "0.04em",
+          minHeight: "1.2em",
+        }}>
+          {link.value}
+        </div>
       </div>
     </motion.a>
   );
