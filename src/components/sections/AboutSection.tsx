@@ -112,7 +112,7 @@ export function AboutSection() {
                 border: "1px solid rgba(83,68,61,0.2)",
               }}
             >
-              <p className="font-black text-lg" style={{ color: "#AD7556" }}>Gokul Naveen</p>
+              <p className="font-black text-lg" style={{ color: "#AD7556" }}>Gokula Chapala</p>
               <p className="text-sm font-semibold mt-0.5" style={{ color: "#7A9CB3" }}>Software Engineer</p>
             </div>
 

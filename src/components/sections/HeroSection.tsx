@@ -41,8 +41,8 @@ function StatCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
 }
 
 /* ── Typewriter tagline ── */
-const TW_P1 = "Turning Stack Overflow answers and AI prompts into systems that actually scale since 2021. ";
-const TW_P2 = "Running on coffee.";
+const TW_P1 = "Software Engineer with a knack for data-intensive applications. I build the systems that process millions and stay alive under pressure. ";
+const TW_P2 = "Obsess over p95 latency until it's beautiful. Coffee helps.";
 const TW_FULL = TW_P1 + TW_P2;
 
 function TypewriterTagline() {
@@ -107,7 +107,7 @@ function BrickLetters({ text, color }: { text: string; color: string }) {
 
 const stats = [
   { value: 10, suffix: "M+", label: "Daily Transactions", sub: "Processed"   },
-  { value: 65, suffix: "%",  label: "P99 Latency",        sub: "Reduced"     },
+  { value: 65, suffix: "%",  label: "API Latency",        sub: "Reduced"     },
   { value: 1,  suffix: "M+", label: "Jobs / Month",       sub: "Scheduled"   },
   { value: 3,  suffix: "+",  label: "Years Experience",   sub: "Engineering" },
 ];

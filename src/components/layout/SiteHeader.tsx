@@ -17,6 +17,7 @@ const navItems = [
 export function SiteHeader() {
   const active = useActiveSection(["about", "experience", "projects", "skills", "education", "contact"]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [devHovered, setDevHovered] = useState(false);
 
   const handleNavClick = (id: string) => {
     setMobileOpen(false);
@@ -42,26 +43,33 @@ export function SiteHeader() {
           {/* Logo — GOKUL in brick letters */}
           <Link
             href="/"
-            className="flex items-center gap-2 group"
-            aria-label="Gokul Naveen"
+            className="flex items-center gap-2"
+            aria-label="Gokula Chapala"
           >
             <span
-              className="text-lg font-black tracking-widest uppercase"
+              className="text-xl font-black tracking-widest uppercase"
               style={{ color: "#AD7556", fontFamily: "Fredoka One, sans-serif", letterSpacing: "0.12em" }}
             >
               GOKUL
             </span>
             <span
-              className="text-xs font-black uppercase tracking-wider"
+              className="text-sm font-black uppercase tracking-wider"
+              onMouseEnter={() => setDevHovered(true)}
+              onMouseLeave={() => setDevHovered(false)}
               style={{
                 backgroundColor: "#AD7556",
                 color: "#FDFCFA",
                 padding: "3px 8px",
                 borderRadius: "3px",
                 letterSpacing: "0.1em",
-                boxShadow: "3px 0 0 rgba(0,0,0,0.28), 0 4px 0 rgba(0,0,0,0.38), 3px 4px 0 rgba(0,0,0,0.32)",
                 display: "inline-block",
                 position: "relative",
+                transform: devHovered ? "translateY(-4px)" : "translateY(0)",
+                boxShadow: devHovered
+                  ? "3px 0 0 rgba(0,0,0,0.28), 0 8px 0 rgba(0,0,0,0.38), 3px 8px 0 rgba(0,0,0,0.32)"
+                  : "3px 0 0 rgba(0,0,0,0.28), 0 4px 0 rgba(0,0,0,0.38), 3px 4px 0 rgba(0,0,0,0.32)",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                cursor: "pointer",
               }}
             >
               .dev

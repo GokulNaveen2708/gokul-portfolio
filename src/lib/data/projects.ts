@@ -188,26 +188,4 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/GokulNaveen2708/Text-Classification-with-UDA-and-BERT",
     image: "/projects/images/TC.jpeg",
   },
-  {
-    slug: "youtube-subscription-migration",
-    title: "YouTube Subscription Migration Tool",
-    subtitle: "Python CLI • YouTube Data API v3 • OAuth 2.0",
-    category: "Developer Tools",
-    tags: ["Python", "YouTube API", "OAuth 2.0", "Google Cloud", "CLI", "Automation"],
-    summary:
-      "A Python CLI tool that migrates YouTube subscriptions between Google accounts using the official YouTube Data API v3, with quota-aware retry logic and backup export.",
-    highlightBullets: [
-      "Built OAuth 2.0 Desktop flow for multi-account authentication, handling token persistence and refresh across sessions.",
-      "Implemented chunked subscription export with JSON backup and automated retry file generation for quota-limited failures.",
-      "Designed quota-aware execution that respects YouTube API's 10,000 daily unit limit (50 units per subscribe), with automatic resume capability.",
-      "Created a clean CLI interface with progress logging and failure reporting for reliable batch migrations.",
-    ],
-    problemStatement:
-      "YouTube offers no official way to transfer subscriptions between Google accounts. Manual migration means clicking 'Subscribe' hundreds of times — slow, error-prone, and tedious.",
-    technicalApproach:
-      "Uses google-api-python-client with OAuth 2.0 Desktop credentials. The script authenticates both source and target accounts, exports all subscriptions to JSON, then iterates through channel IDs calling the subscriptions.insert API. Failed requests are written to a retry file for resumption on subsequent runs, respecting API quota limits.",
-    whatILearned:
-      "Learned Google OAuth 2.0 Desktop flow, YouTube Data API v3 quota management, and how to build resilient CLI tools with export/retry patterns for quota-constrained APIs.",
-    githubUrl: "https://github.com/GokulNaveen2708/Youtube-Subscription-Migration",
-  },
 ];
