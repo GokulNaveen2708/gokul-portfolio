@@ -92,6 +92,19 @@ const categories: SkillCategory[] = [
       { name: "MLflow",     studs: 2 },
     ],
   },
+  {
+    label: "AI Developer Tools",
+    brickColor: "#AD7556",
+    textColor: "#53443D",
+    studs: 4,
+    skills: [
+      { name: "Claude Code",     studs: 3 },
+      { name: "GitHub Copilot",  studs: 3 },
+      { name: "Codex",           studs: 2 },
+      { name: "Cursor",          studs: 2 },
+      { name: "LLM APIs",        studs: 2 },
+    ],
+  },
 ];
 
 const flyDirections = [

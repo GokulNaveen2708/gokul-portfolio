@@ -186,6 +186,11 @@ export function AboutSection() {
                   where I own a distributed job-orchestration platform automating 1M+ jobs/month across 40+
                   engineering teams.
                 </p>
+                <p className="text-base leading-relaxed font-semibold" style={{ color: "#7A9CB3" }}>
+                  Tools like{" "}
+                  <span style={{ color: "#AD7556" }}>Claude Code and Codex</span>
+                  {" "}are part of how I work every day, from sketching out ideas to shipping production code.
+                </p>
 
                 {/* Highlight bullets */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t" style={{ borderColor: "rgba(122,156,179,0.2)" }}>

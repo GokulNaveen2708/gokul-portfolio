@@ -187,7 +187,7 @@ const SPEED_LINES: { topOff: number; len: number; opacity: number }[] = [
 ];
 
 // ── Company short labels ───────────────────────────────────────────────────────
-const COMPANY_SHORT = ["Reliable", "Accenture", "RIT"];
+const COMPANY_SHORT = ["Reliable", "RIT", "Accenture"];
 
 // ── Main section ───────────────────────────────────────────────────────────────
 export function ExperienceSection() {
@@ -478,9 +478,8 @@ export function ExperienceSection() {
         </div>
 
         {/* ── Experience Card ── */}
-        <div style={{ minHeight: 260 }}>
+        <div>
           <AnimatePresence mode="wait">
-            {!isMoving && (
               <motion.div
                 key={displayIdx}
                 initial={{ opacity: 0, x: direction === "ltr" ? 50 : -50 }}
@@ -693,7 +692,6 @@ export function ExperienceSection() {
                   </div>
                 </div>
               </motion.div>
-            )}
           </AnimatePresence>
         </div>
 
